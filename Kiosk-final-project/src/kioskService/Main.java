@@ -6,6 +6,6 @@ public class Main {
     // 2. 사용하지 않는 Setter 메서드 삭제
 
     public static void main(String[] args) {
-        System.out.println("Hello and welcome!");
+        System.out.println("Hello and welcome!!!");
     }
 }
