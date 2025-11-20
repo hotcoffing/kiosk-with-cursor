@@ -1,9 +1,8 @@
 package order;
 
-import com.example.demo.member.Grade;
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberService;
-import com.example.demo.member.MemberServiceImpl;
+import member.Grade;
+import member.Member;
+import member.MemberService;
 import config.AppConfig;
 
 public class OrderApp {

@@ -1,4 +1,4 @@
-package com.example.demo.member;
+package member;
 
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;

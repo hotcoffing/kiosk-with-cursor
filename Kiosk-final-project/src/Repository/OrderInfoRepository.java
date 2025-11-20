@@ -1,5 +1,5 @@
 package Repository;
 
-public interface orderInfoRepository {
+public interface OrderInfoRepository {
 
 }

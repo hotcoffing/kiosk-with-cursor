@@ -1,8 +1,8 @@
 package config;
 
-import com.example.demo.member.MemberService;
-import com.example.demo.member.MemberServiceImpl;
-import com.example.demo.member.MemoryMemberRepository;
+import member.MemberService;
+import member.MemberServiceImpl;
+import member.MemoryMemberRepository;
 import discount.DiscountPolicyImpl;
 import order.OrderService;
 import order.OrderServiceImpl;

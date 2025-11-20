@@ -31,17 +31,6 @@ public class Order {
         this.orderItems.add(orderItem);
     }
 
-    // 장바구니 및 주문 창에서 최종 금액 확인 가능
-    public int getTotalPrice() {
-        int totalPrice = 0;
-
-        for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.getPriceWithOption();
-        }
-
-        return totalPrice;
-    }
-
     // 버튼 클릭시 실행 => Service 이동 가능 (주문 시 필드 변경 사항)
     public void completeOrder(PaymentType paymentType) {
         if (this.orderState == OrderState.ORDERED) {

@@ -1,7 +1,7 @@
 package discount;
 
-import com.example.demo.member.Grade;
-import com.example.demo.member.Member;
+import member.Grade;
+import member.Member;
 
 public class RateDiscountPolicyImpl implements DiscountPolicy {
 

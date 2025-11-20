@@ -1,7 +1,6 @@
-package com.example.demo.member;
+package member;
 
 import config.AppConfig;
-import order.OrderService;
 
 public class MemberApp {
     public static  void main(String[] args) {

@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public interface swingController {
+public interface SwingController {
 }

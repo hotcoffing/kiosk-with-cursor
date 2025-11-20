@@ -1,5 +1,12 @@
 package kioskService;
 
-public class paymentServiceImpl implements paymentService {
+import Repository.ShoppingCartRepository;
 
+public class PaymentServiceImpl implements PaymentService {
+
+    private final ShoppingCartRepository shoppingCartRepository;
+
+    public PaymentServiceImpl(ShoppingCartRepository shoppingCartRepository) {
+        this.shoppingCartRepository = shoppingCartRepository;
+    }
 }

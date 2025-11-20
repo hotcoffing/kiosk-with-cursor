@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItem {
+    private Category category;
     private String name;
     private int originalPrice;
     private String imagePath;
@@ -11,15 +12,16 @@ public class MenuItem {
     private List<Option> singleOptionsList = new ArrayList<>();
     private List<Option> multipleOptionsList = new ArrayList<>();
 
-    public MenuItem(String name, int OriginalPrice, String imagePath) {
+    public MenuItem(Category category, String name, int OriginalPrice, String imagePath) {
+        this.category = category;
         this.name = name;
         this.originalPrice = OriginalPrice;
         this.imagePath = imagePath;
     }
     
     // 이미지 주소 에러 미리 방지 (추후 삭제 필요)
-    public MenuItem(String name, int OriginalPrice) {
-        this(name, OriginalPrice, "");
+    public MenuItem(Category category, String name, int OriginalPrice) {
+        this(category, name, OriginalPrice, "");
         System.out.println("Error : " + this.name + " has No ImagePath");
     }
     

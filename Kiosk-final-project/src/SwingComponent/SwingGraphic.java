@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public interface swingGraphic {
+public interface SwingGraphic {
 }

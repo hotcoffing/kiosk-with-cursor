@@ -1,5 +1,5 @@
 package Repository;
 
-public class orderInfoRespositoryImpl implements orderInfoRepository {
+public class OrderInfoRespositoryImpl implements OrderInfoRepository {
 
 }

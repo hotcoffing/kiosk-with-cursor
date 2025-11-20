@@ -1,11 +1,9 @@
 package order;
 
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberRepository;
-import com.example.demo.member.MemoryMemberRepository;
+import member.Member;
+import member.MemberRepository;
+import member.MemoryMemberRepository;
 import discount.DiscountPolicy;
-import discount.DiscountPolicyImpl;
-import discount.RateDiscountPolicyImpl;
 
 public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;

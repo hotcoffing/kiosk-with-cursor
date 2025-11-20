@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public class swingControllerImpl implements swingController{
+public class SwingControllerImpl implements SwingController {
 }

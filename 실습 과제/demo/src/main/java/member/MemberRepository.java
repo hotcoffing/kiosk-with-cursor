@@ -1,4 +1,4 @@
-package com.example.demo.member;
+package member;
 
 public interface MemberRepository {
     void save(Member member);

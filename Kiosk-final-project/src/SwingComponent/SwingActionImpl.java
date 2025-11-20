@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public class swingActionImpl {
+public class SwingActionImpl {
 }

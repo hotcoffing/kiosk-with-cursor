@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public interface swingAction {
+public interface SwingAction {
 }

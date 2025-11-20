@@ -1,4 +1,4 @@
 package kioskService;
 
-public interface shoppingCartService {
+public interface ShoppingCartService {
 }

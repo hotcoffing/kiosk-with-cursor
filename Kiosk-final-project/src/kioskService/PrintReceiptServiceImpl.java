@@ -1,5 +1,5 @@
 package kioskService;
 
-public class printReceiptServiceImpl implements printReceiptService {
+public class PrintReceiptServiceImpl implements PrintReceiptService {
 
 }

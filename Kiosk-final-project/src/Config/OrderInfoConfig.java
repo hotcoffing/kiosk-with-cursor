@@ -1,4 +1,5 @@
-package config;
+package Config;
 
 public class OrderInfoConfig {
+
 }

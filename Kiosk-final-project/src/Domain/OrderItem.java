@@ -8,35 +8,26 @@ import static Domain.OptionType.SINGLE;
 public class OrderItem {
     private Long id;
     private String menuName;
-    private int quantity;
     private int price;
     private OrderState orderState;
 
-    private Option singleOption = new Option("", 0, SINGLE);
-    private List<Option> multipleOptions = new ArrayList<>();
+    private Option singleOption;
+    private List<Option> multipleOptions;
 
-    public OrderItem(String menuName, int quantity, int price, OrderState orderState) {
+    public OrderItem(String menuName, int price, OrderState orderState) {
         this.menuName = menuName;
-        this.quantity = quantity;
         this.price = price;
         this.orderState = orderState;
     }
 
     // 옵션 설정 (Swing actionListener 활용)
-    public void setSingleOption(Option option) {
-        if (option == null) {
-            throw new IllegalArgumentException("option can't be null");
-        }
-        if (option.getType() == SINGLE) {
-            this.singleOption = option;
-        }
-    }
-
-    public void setMultipleOptions(List<Option> options) {
+    public void setOption(List<Option> options) {
         if (options == null) {
-            throw new IllegalArgumentException("option can't be null");
+            throw new IllegalArgumentException("single option can't be null");
         }
-        this.multipleOptions.clear();
+
+        this.singleOption = options.get(0);
+
         for (Option EachMultipleOption : options) {
             if (EachMultipleOption.getType() == OptionType.MULTIPLE) {
                 this.multipleOptions.add(EachMultipleOption);
@@ -57,7 +48,7 @@ public class OrderItem {
             multipleOptionPrice += EachMultipleOption.getPrice();
         }
 
-        return (price + singleOptionPrice + multipleOptionPrice) * quantity;
+        return price + singleOptionPrice + multipleOptionPrice;
     }
 
     // Getter and Setter
@@ -75,14 +66,6 @@ public class OrderItem {
 
     public void setMenuName(String menuName) {
         this.menuName = menuName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public int getPrice() {

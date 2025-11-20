@@ -1,4 +1,4 @@
 package kioskService;
 
-public interface paymentService {
+public interface PaymentService {
 }

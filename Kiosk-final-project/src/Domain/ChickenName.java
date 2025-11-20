@@ -1,4 +1,10 @@
 package Domain;
 
-public enum MenuItemName {
+public enum ChickenName {
+    FRIED,
+    SEASONED,
+    FRINKLE,
+    MATCHOKING,
+    GOLDKING,
+    QUASACKING
 }

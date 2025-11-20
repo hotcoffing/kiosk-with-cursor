@@ -1,4 +1,4 @@
 package SwingComponent;
 
-public class swingGraphicImpl implements swingGraphic{
+public class SwingGraphicImpl implements SwingGraphic {
 }
