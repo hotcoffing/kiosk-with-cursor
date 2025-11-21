@@ -22,12 +22,6 @@ public class ShoppingCartConfig {
         );
     }
 
-    public CheckOrderListService checkOrderListService() {
-        return new CheckOrderListServiceImpl(
-                new ShoppingCartRepositoryImpl()
-        );
-    }
-
     public ShoppingCartService shoppingCartService() {
         return new ShoppingCartServiceImpl(
                 new ShoppingCartRepositoryImpl()

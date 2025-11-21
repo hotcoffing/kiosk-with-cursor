@@ -52,12 +52,12 @@ public class SelectOptionServiceImpl implements SelectOptionService {
 
     @Override
     public int getLocalMoney(MenuItem item) {
-        int localMoney = 0;
+        int optionMoney = 0;
 
         for (Option option : options) {
-            localMoney += option.getPrice();
+            optionMoney += option.getPrice();
         }
 
-        return item.getOriginalPrice() + localMoney;
+        return item.getOriginalPrice() + optionMoney;
     }
 }
