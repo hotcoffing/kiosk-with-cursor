@@ -7,7 +7,7 @@ import static Domain.OrderState.*;
 
 public class OrderItem extends IdCounter {
     private final Long id;
-    private String menuName;
+    private final String menuName;
     private int price;
     private int quantity;
 
@@ -60,15 +60,12 @@ public class OrderItem extends IdCounter {
         return id;
     }
 
-    // Getter and Setter
     public String getMenuName() {
         return menuName;
     }
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
 
+    // Getter and Setter
     public int getPrice() {
         return price;
     }

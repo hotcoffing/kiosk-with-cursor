@@ -37,9 +37,7 @@ public class OptionStatic {
         return combo;
     }
 
-    public static Option getWingbong() {
-        return wingbong;
-    }
+    public static Option getWingbong() { return wingbong; }
 
     public static Option getOnlyleg() {
         return onlyleg;
