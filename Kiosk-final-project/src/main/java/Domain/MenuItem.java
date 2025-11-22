@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItem {
-    private final Category category;
-    private final String name;
-    private final int originalPrice;
-    private final String imagePath;
+    private Category category;
+    private String name;
+    private int originalPrice;
+    private String imagePath;
     
     public MenuItem(Category category, String name, int OriginalPrice, String imagePath) {
         this.category = category;
@@ -22,7 +22,7 @@ public class MenuItem {
         System.out.println("Error : " + this.name + " has No ImagePath");
     }
     
-    // 옵션 리스트 추가 (치킨만 옵션을 부여하면 일단 필요하지 않아 주석 처리함)
+    // 옵션 리스트 추가 (의미에 맞지 않는것 같아 주석 처리함)
     /*private List<Option> singleOptionsList = new ArrayList<>();
     private List<Option> multipleOptionsList = new ArrayList<>();
 
@@ -44,21 +44,36 @@ public class MenuItem {
         }
     }*/
 
-    // Getter
+    // Getter and Setter
     public Category getCategory() {
         return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getOriginalPrice() {
         return originalPrice;
+    }
+
+    public void setOriginalPrice(int originalPrice) {
+        this.originalPrice = originalPrice;
     }
 
     public String getImagePath() {
         return imagePath;
     }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

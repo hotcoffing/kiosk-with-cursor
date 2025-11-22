@@ -1,9 +1,9 @@
 package Domain;
 
 public class Option {
-    private final String name;
-    private final int price;
-    private final OptionType type;
+    private String name;
+    private int price;
+    private OptionType type;
 
 
     public Option(String name, int price, OptionType type) {
@@ -12,7 +12,7 @@ public class Option {
         this.type = type;
     }
 
-    // Getter
+    // Getter and Setter
     public String getName() {
         return name;
     }
@@ -23,5 +23,16 @@ public class Option {
 
     public OptionType getType() {
         return type;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setType(OptionType type) {
+        this.type = type;
     }
 }
