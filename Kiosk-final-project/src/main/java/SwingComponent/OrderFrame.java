@@ -283,6 +283,19 @@ public class OrderFrame extends JFrame {
     private void processPayment() {
         if (currentOrder == null || selectedPaymentType == null) return;
 
+        // 장바구니가 비어있는지 확인
+        if (shoppingCartRepository != null) {
+            List<OrderItem> orderItems = shoppingCartRepository.getAllOrderItems();
+            
+            if (orderItems == null || orderItems.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "장바구니가 비어있습니다.\n메뉴를 선택해주세요.", 
+                    "주문 불가", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
         // 고객 이름 입력 받기
         String customerName = JOptionPane.showInputDialog(this, "고객 이름을 입력하세요:", "고객 정보", JOptionPane.PLAIN_MESSAGE);
         

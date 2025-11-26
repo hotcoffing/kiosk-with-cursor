@@ -72,6 +72,8 @@ public class SwingConfig {
                     shoppingCartConfig().selectMenuService(),
                     shoppingCartConfig().shoppingCartService()
             );
+            // Repository 주입
+            selectMenuFrame.setShoppingCartRepository(shoppingCartRepository());
             // Order 객체 설정
             selectMenuFrame.setOrder(getCurrentOrder());
         }

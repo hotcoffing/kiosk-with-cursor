@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 public class SelectMenuFrame extends JFrame {
     // config 연결을 위한 기능 필드
@@ -18,6 +19,7 @@ public class SelectMenuFrame extends JFrame {
     private final SwingController swingController;
     private SelectMenuService selectMenuService;
     private ShoppingCartService shoppingCartService;
+    private Repository.ShoppingCartRepository shoppingCartRepository;
 
     // 컨텐츠펜 선언
     JPanel contentPane;
@@ -83,6 +85,10 @@ public class SelectMenuFrame extends JFrame {
         this.shoppingCartService = shoppingCartService;
     }
 
+    public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {
+        this.shoppingCartRepository = shoppingCartRepository;
+    }
+
     public void setOrder(Order order) {
         this.currentOrder = order;
         updateTotal();
@@ -145,6 +151,19 @@ public class SelectMenuFrame extends JFrame {
         });
 
         orderButton.addActionListener(e -> {
+            // 장바구니가 비어있는지 확인
+            if (shoppingCartRepository != null) {
+                List<OrderItem> orderItems = shoppingCartRepository.getAllOrderItems();
+                
+                if (orderItems == null || orderItems.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, 
+                        "장바구니가 비어있습니다.\n메뉴를 선택해주세요.", 
+                        "주문 불가", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+            
             if (selectMenuService != null) {
                 selectMenuService.goOrder(currentOrder);
             }

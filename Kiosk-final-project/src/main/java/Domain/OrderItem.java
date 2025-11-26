@@ -125,4 +125,43 @@ public class OrderItem extends IdCounter {
         
         return optionsStr.toString();
     }
+
+    // 같은 메뉴와 옵션인지 비교하는 메서드
+    public boolean isSameMenuAndOptions(OrderItem other) {
+        if (other == null) return false;
+        
+        // 메뉴 이름 비교
+        if (!this.menuName.equals(other.menuName)) {
+            return false;
+        }
+        
+        // 단일 옵션 비교
+        if (this.singleOption == null && other.singleOption == null) {
+            // 둘 다 null이면 같음
+        } else if (this.singleOption == null || other.singleOption == null) {
+            return false;
+        } else if (!this.singleOption.getName().equals(other.singleOption.getName())) {
+            return false;
+        }
+        
+        // 다중 옵션 비교
+        if (this.multipleOptions.size() != other.multipleOptions.size()) {
+            return false;
+        }
+        
+        // 다중 옵션 이름 리스트 생성 및 정렬하여 비교
+        List<String> thisMultipleNames = new ArrayList<>();
+        for (Option opt : this.multipleOptions) {
+            thisMultipleNames.add(opt.getName());
+        }
+        Collections.sort(thisMultipleNames);
+        
+        List<String> otherMultipleNames = new ArrayList<>();
+        for (Option opt : other.multipleOptions) {
+            otherMultipleNames.add(opt.getName());
+        }
+        Collections.sort(otherMultipleNames);
+        
+        return thisMultipleNames.equals(otherMultipleNames);
+    }
 }
