@@ -1,7 +1,6 @@
 package Domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MenuItem {
     private Category category;

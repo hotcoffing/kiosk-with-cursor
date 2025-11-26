@@ -1,6 +1,6 @@
 package kioskService;
 
-import Repository.ShoppingCartRepository;
+import Repository.*;
 
 public class PaymentServiceImpl implements PaymentService {
 

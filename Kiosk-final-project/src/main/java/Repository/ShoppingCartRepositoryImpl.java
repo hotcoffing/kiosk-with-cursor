@@ -1,11 +1,8 @@
 package Repository;
 
-import Domain.OrderItem;
+import Domain.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     private static Map<Long, OrderItem> store = new HashMap<>();

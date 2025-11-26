@@ -1,17 +1,12 @@
 package kioskService;
 
-import Domain.Category;
-import Domain.MenuItem;
-import Domain.Option;
-import Domain.Order;
-import Repository.ShoppingCartRepository;
-import Static.OptionStatic;
+import Domain.*;
+import Repository.*;
+import Static.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static Domain.OrderState.CHOOSE_ORDER;
-import static Domain.OrderState.SHOPPING_CART;
+import static Domain.OrderState.*;
 
 public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectOptionService {
 

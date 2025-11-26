@@ -1,7 +1,6 @@
 package kioskService;
 
-import Domain.Order;
-import Domain.PaymentType;
+import Domain.*;
 
 public interface OrderService {
     public void plusOrderItem(Long id);

@@ -1,8 +1,7 @@
 package kioskService;
 
-import Domain.Order;
-import Domain.OrderState;
-import Repository.OrderInfoRespositoryImpl;
+import Domain.*;
+import Repository.*;
 
 public class PrintReceiptServiceImpl implements PrintReceiptService {
     private final OrderInfoRespositoryImpl orderInfoRespositoryImpl;

@@ -1,11 +1,7 @@
 package kioskService;
 
-import Domain.Category;
-import Domain.MenuItem;
-import Domain.Option;
-import Domain.Order;
-
-import java.util.List;
+import Domain.*;
+import java.util.*;
 
 public interface SelectOptionService {
     public List<Option> completeOption(Category type, String optionName);

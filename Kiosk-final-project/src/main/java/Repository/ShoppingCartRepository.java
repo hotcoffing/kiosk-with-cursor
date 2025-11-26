@@ -1,8 +1,8 @@
 package Repository;
 
-import Domain.OrderItem;
+import Domain.*;
 
-import java.util.List;
+import java.util.*;
 
 public interface ShoppingCartRepository {
     void addOrderItem(OrderItem orderItem);

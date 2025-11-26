@@ -13,7 +13,7 @@ public class Runner {
         StartFrame startFrame = swingConfig.startFrame();
         SelectMenuFrame selectMenuFrame = swingConfig.selectMenuFrame();
         CheckOrderListNewTabFrame checkOrderListFrame = swingConfig.checkOrderListNewTabFrame();
-        SelectOptionFrame selectOptionFrame = swingConfig.selectOptionFrame();
+        SelectOptionNewTabFrame selectOptionNewTabFrame = swingConfig.selectOptionNewTabFrame();
         ShoppingCartFrame shoppingCartFrame = swingConfig.shoppingCartFrame();
         OrderFrame orderFrame = swingConfig.orderFrame();
         ReceiptNewTabFrame receiptFrame = swingConfig.receiptNewTabFrame();
@@ -26,7 +26,7 @@ public class Runner {
                 startFrame,
                 selectMenuFrame,
                 checkOrderListFrame,
-                selectOptionFrame,
+                selectOptionNewTabFrame,
                 shoppingCartFrame,
                 orderFrame,
                 receiptFrame

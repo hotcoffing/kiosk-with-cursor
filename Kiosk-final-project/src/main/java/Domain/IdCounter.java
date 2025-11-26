@@ -1,6 +1,6 @@
 package Domain;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.*;
 
 public class IdCounter {
     protected static final AtomicLong orderItemIdCounter = new AtomicLong(1000L);

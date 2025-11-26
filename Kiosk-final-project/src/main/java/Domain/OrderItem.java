@@ -1,7 +1,6 @@
 package Domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static Domain.OrderState.*;
 
@@ -91,5 +90,39 @@ public class OrderItem extends IdCounter {
 
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
+    }
+
+    public Option getSingleOption() {
+        return singleOption;
+    }
+
+    public List<Option> getMultipleOptions() {
+        return multipleOptions;
+    }
+
+    // 옵션 정보를 문자열로 반환 (단일 옵션과 다중 옵션 분리)
+    public String getOptionsString() {
+        StringBuilder optionsStr = new StringBuilder();
+        
+        // 단일 옵션
+        if (singleOption != null) {
+            optionsStr.append("단일 옵션 : ").append(singleOption.getName());
+        }
+        
+        // 다중 옵션
+        if (!multipleOptions.isEmpty()) {
+            if (optionsStr.length() > 0) {
+                optionsStr.append("\n");
+            }
+            optionsStr.append("다중 옵션 : ");
+            for (int i = 0; i < multipleOptions.size(); i++) {
+                if (i > 0) {
+                    optionsStr.append(", ");
+                }
+                optionsStr.append(multipleOptions.get(i).getName());
+            }
+        }
+        
+        return optionsStr.toString();
     }
 }

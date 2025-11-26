@@ -1,7 +1,7 @@
 package kioskService;
 
 import Domain.*;
-import Repository.ShoppingCartRepository;
+import Repository.*;
 
 import static Domain.Category.*;
 import static Domain.ChickenName.*;

@@ -1,9 +1,7 @@
 package kioskService;
 
-import Domain.Order;
-import Domain.OrderItem;
-
-import java.util.List;
+import Domain.*;
+import java.util.*;
 
 public interface CheckOrderListService {
     public List<OrderItem> getOrderItemsByUserInfo(int tableNumber, String name);

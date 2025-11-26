@@ -1,9 +1,7 @@
 package kioskService;
 
-import Domain.MenuItem;
-import Domain.Option;
-
-import java.util.List;
+import Domain.*;
+import java.util.*;
 
 public interface CalcMoneyInterface {
     public int getTotalPriceUseShoppingCart();

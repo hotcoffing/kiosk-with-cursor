@@ -1,11 +1,9 @@
 package kioskService;
 
-import Domain.MenuItem;
-import Domain.Option;
-import Domain.OrderItem;
-import Repository.ShoppingCartRepository;
+import Domain.*;
+import Repository.*;
 
-import java.util.List;
+import java.util.*;
 
 public class CalcMoneyAdapter implements CalcMoneyInterface {
 

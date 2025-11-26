@@ -1,12 +1,9 @@
 package kioskService;
 
-import Domain.Order;
-import Domain.OrderItem;
-import Repository.ShoppingCartRepository;
+import Domain.*;
+import Repository.*;
 
-
-import static Domain.OrderState.CHOOSE_ORDER;
-import static Domain.OrderState.ORDERING;
+import static Domain.OrderState.*;
 
 public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements ShoppingCartService {
 
@@ -17,7 +14,10 @@ public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements Shoppin
     @Override
     public void plusOrderItem(Long id) {
         OrderItem orderItem = shoppingCartRepository.getOrderItemById(id);
-        shoppingCartRepository.addOrderItem(orderItem);
+        if (orderItem != null) {
+            // 수량을 1만 증가시킴
+            orderItem.setQuantity(orderItem.getQuantity() + 1);
+        }
     }
 
     @Override

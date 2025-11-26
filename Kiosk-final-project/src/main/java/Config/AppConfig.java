@@ -1,10 +1,9 @@
 package Config;
 
 // MainApp.java 등 설정 파일
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import javax.sql.DataSource;
+import com.zaxxer.hikari.*;
+import org.springframework.jdbc.core.*;
+import javax.sql.*;
 
 public class AppConfig {
 

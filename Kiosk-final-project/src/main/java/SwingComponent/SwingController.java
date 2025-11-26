@@ -1,7 +1,8 @@
 package SwingComponent;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+
+import Domain.MenuItem;
 
 public interface SwingController {
     // For CheckOrderList (새 창)
@@ -13,8 +14,8 @@ public interface SwingController {
     // For SelectMenu -> Start
     void moveStartFrame(JFrame currentFrame);
 
-    // For SelectMenu -> SelectOption
-    void moveSelectOption(JFrame currentFrame);
+    // For SelectMenu -> SelectOption (새 창 생성)
+    void openSelectOptionNewTab(JFrame currentFrame, MenuItem menuItem);
 
     // For SelectMenu -> ShoppingCart
     void moveShoppingCart(JFrame currentFrame);

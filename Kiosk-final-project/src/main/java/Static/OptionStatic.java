@@ -2,8 +2,8 @@ package Static;
 
 import Domain.Option;
 import Domain.OptionType;
-
-import static Domain.OptionType.*;
+import static Domain.OptionType.MULTIPLE;
+import static Domain.OptionType.SINGLE;
 
 public class OptionStatic {
     private static final Option normal = createOption("기본", 0, SINGLE);

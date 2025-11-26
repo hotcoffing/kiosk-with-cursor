@@ -1,12 +1,10 @@
 package Domain;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.*;
+import java.util.*;
+import java.util.concurrent.atomic.*;
 
-import static Domain.OrderState.CANCELED;
-import static Domain.OrderState.SHOPPING_CART;
+import static Domain.OrderState.*;
 
 public class Order extends IdCounter {
     private final Long id;

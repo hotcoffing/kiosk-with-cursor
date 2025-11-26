@@ -1,9 +1,12 @@
 package Static;
 
 import Domain.Category;
+import static Domain.Category.CHICKEN;
+import static Domain.Category.DRINKS;
+import static Domain.Category.SIDES;
+import static Domain.Category.SNACKS;
+import static Domain.Category.SOUP;
 import Domain.MenuItem;
-
-import static Domain.Category.*;
 
 public class MenuItemStatic {
     // 치킨 아이템

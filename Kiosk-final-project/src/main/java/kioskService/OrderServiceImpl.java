@@ -1,9 +1,9 @@
 package kioskService;
 
-
 import Domain.*;
-import Repository.ShoppingCartRepository;
-import static Domain.IdCounter.initOrderItemIdCounter;
+import Repository.*;
+
+import static Domain.IdCounter.*;
 
 public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
 

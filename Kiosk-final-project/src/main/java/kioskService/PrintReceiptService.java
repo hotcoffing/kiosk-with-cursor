@@ -1,6 +1,6 @@
 package kioskService;
 
-import Domain.Order;
+import Domain.*;
 
 public interface PrintReceiptService {
     public Order getOrderData(Long orderId);

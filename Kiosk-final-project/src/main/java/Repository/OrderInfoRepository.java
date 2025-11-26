@@ -1,7 +1,7 @@
 package Repository;
 
-import Domain.Order;
-import java.util.List;
+import Domain.*;
+import java.util.*;
 
 public interface OrderInfoRepository {
     void addOrder(Order orderItem);

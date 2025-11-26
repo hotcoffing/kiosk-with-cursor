@@ -1,7 +1,7 @@
 package SwingComponent;
 
+import Domain.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class SwingControllerImpl implements SwingController {
 
@@ -9,7 +9,7 @@ public class SwingControllerImpl implements SwingController {
     private StartFrame startFrame;
     private SelectMenuFrame selectMenuFrame;
     private CheckOrderListNewTabFrame checkOrderListFrame;
-    private SelectOptionFrame selectOptionFrame;
+    private SelectOptionNewTabFrame selectOptionNewTabFrame;
     private ShoppingCartFrame shoppingCartFrame;
     private OrderFrame orderFrame;
     private ReceiptNewTabFrame receiptFrame;
@@ -22,14 +22,14 @@ public class SwingControllerImpl implements SwingController {
     public void setFrames(StartFrame startFrame,
                           SelectMenuFrame selectMenuFrame,
                           CheckOrderListNewTabFrame checkOrderListFrame,
-                          SelectOptionFrame selectOptionFrame,
+                          SelectOptionNewTabFrame selectOptionNewTabFrame,
                           ShoppingCartFrame shoppingCartFrame,
                           OrderFrame orderFrame,
                           ReceiptNewTabFrame receiptFrame) {
         this.startFrame = startFrame;
         this.selectMenuFrame = selectMenuFrame;
         this.checkOrderListFrame = checkOrderListFrame;
-        this.selectOptionFrame = selectOptionFrame;
+        this.selectOptionNewTabFrame = selectOptionNewTabFrame;
         this.shoppingCartFrame = shoppingCartFrame;
         this.orderFrame = orderFrame;
         this.receiptFrame = receiptFrame;
@@ -50,6 +50,10 @@ public class SwingControllerImpl implements SwingController {
         if (selectMenuFrame != null) {
             currentFrame.setVisible(false);
             selectMenuFrame.setVisible(true);
+            // 장바구니 업데이트
+            if (selectMenuFrame instanceof SelectMenuFrame) {
+                ((SelectMenuFrame) selectMenuFrame).updateTotal();
+            }
             System.out.println("메뉴 선택 화면으로 이동");
         }
     }
@@ -64,13 +68,13 @@ public class SwingControllerImpl implements SwingController {
         }
     }
 
-    // selectMenuFrame -> selectOptionFrame
+    // selectMenuFrame -> selectOptionNewTabFrame (새 창 생성)
     @Override
-    public void moveSelectOption(JFrame currentFrame) {
-        if (selectOptionFrame != null) {
-            currentFrame.setVisible(false);
-            selectOptionFrame.setVisible(true);
-            System.out.println("옵션 선택 화면으로 이동");
+    public void openSelectOptionNewTab(JFrame currentFrame, MenuItem menuItem) {
+        if (selectOptionNewTabFrame != null) {
+            selectOptionNewTabFrame.setMenuItem(menuItem);
+            selectOptionNewTabFrame.setVisible(true);
+            System.out.println("옵션 선택 새 창 열기 (메뉴: " + menuItem.getName() + ")");
         }
     }
 
@@ -78,6 +82,10 @@ public class SwingControllerImpl implements SwingController {
     @Override
     public void moveShoppingCart(JFrame currentFrame) {
         if (shoppingCartFrame != null) {
+            // 장바구니 업데이트
+            if (shoppingCartFrame instanceof ShoppingCartFrame) {
+                ((ShoppingCartFrame) shoppingCartFrame).updateOrderItems();
+            }
             currentFrame.setVisible(false);
             shoppingCartFrame.setVisible(true);
             System.out.println("장바구니 화면으로 이동");
@@ -88,9 +96,20 @@ public class SwingControllerImpl implements SwingController {
     @Override
     public void moveOrder(JFrame currentFrame) {
         if (orderFrame != null) {
+            // 주문 화면 업데이트
+            if (orderFrame instanceof OrderFrame) {
+                ((OrderFrame) orderFrame).updateOrderItems();
+            }
             currentFrame.setVisible(false);
             orderFrame.setVisible(true);
             System.out.println("주문 화면으로 이동");
+        }
+    }
+
+    // 메뉴 선택 화면 총계 업데이트 (옵션 창에서 호출)
+    public void updateSelectMenuTotal() {
+        if (selectMenuFrame != null) {
+            selectMenuFrame.updateTotal();
         }
     }
 
