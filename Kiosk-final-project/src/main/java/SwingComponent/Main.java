@@ -7,10 +7,11 @@ public class Main {
     // 1. 리스트 접근 Getter 메서드 삭제
     // 2. 사용하지 않는 Setter 메서드 삭제
 
-    public static void main(String[] args) {
-        SwingConfig swingConfig = new SwingConfig();
 
-        StartFrame startFrame = swingConfig.startFrame();
+
+    public static void main(String[] args) {
+        Runner runner = new Runner();
+        runner.run();
 
         /*System.out.println("===== [Console Test Mode] 키오스크 로직 검증 시작 =====");
 
@@ -59,3 +60,4 @@ public class Main {
         System.out.println("===============================================");*/
     }
 }
+

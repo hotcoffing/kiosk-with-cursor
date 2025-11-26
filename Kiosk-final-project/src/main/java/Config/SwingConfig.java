@@ -1,33 +1,72 @@
-// AppConfig.java (새로 생성하거나, 기존 Config 중 하나를 통합)
-
 package Config;
 
 import SwingComponent.*;
 
 public class SwingConfig {
 
-    // 1. SwingGraphic 객체 생성 (Impl 필요)
+    // config 필드
+    private SwingGraphic swingGraphic;
+    private SwingAction swingAction;
+    private SwingController swingController;
+    
+    // Frame 필드
+    private StartFrame startFrame;
+    private SelectMenuFrame selectMenuFrame;
+    private CheckOrderListNewTabFrame checkOrderListNewTabFrame;
+    private SelectOptionFrame selectOptionFrame;
+    private ShoppingCartFrame shoppingCartFrame;
+    private OrderFrame orderFrame;
+    private ReceiptNewTabFrame receiptNewTabFrame;
+
+    // 공통 제어자
     public SwingGraphic swingGraphic() {
-        return new SwingGraphicImpl(); // SwingGraphicImpl 클래스가 정의되어 있어야 함
+        if (swingGraphic == null) swingGraphic = new SwingGraphicImpl();
+        return swingGraphic;
     }
 
-    // 2. SwingAction 객체 생성 (Impl 필요)
     public SwingAction swingAction() {
-        return new SwingActionImpl(); // SwingActionImpl 클래스가 정의되어 있어야 함
+        if (swingAction == null) swingAction = new SwingActionImpl();
+        return swingAction;
     }
 
-    // 3. SwingController 객체 생성 (Impl 필요)
     public SwingController swingController() {
-        // SwingController가 SwingAction 객체를 의존하는 경우, 여기서 주입
-        // return new SwingControllerImpl(swingAction()); 
-        return new SwingControllerImpl(); // SwingControllerImpl 클래스가 정의되어 있어야 함
+        if (swingController == null) swingController = new SwingControllerImpl();
+        return swingController;
     }
 
-    // 4. StartFrame 객체 생성 및 의존성 주입
+    // Frame 공유 연결
     public StartFrame startFrame() {
-        return new StartFrame(
-                swingGraphic(),      // SwingGraphic 주입
-                swingController()    // SwingController 주입
-        );
+        if (startFrame == null) startFrame = new StartFrame(swingGraphic(), swingController());
+        return startFrame;
+    }
+
+    public SelectMenuFrame selectMenuFrame() {
+        if (selectMenuFrame == null) selectMenuFrame = new SelectMenuFrame(swingGraphic(), swingAction(), swingController());
+        return selectMenuFrame;
+    }
+
+    public CheckOrderListNewTabFrame checkOrderListNewTabFrame() {
+        if (checkOrderListNewTabFrame == null) checkOrderListNewTabFrame = new CheckOrderListNewTabFrame(swingGraphic(), swingAction());
+        return checkOrderListNewTabFrame;
+    }
+
+    public SelectOptionFrame selectOptionFrame() {
+        if (selectOptionFrame == null) selectOptionFrame = new SelectOptionFrame(swingGraphic(), swingAction(), swingController());
+        return selectOptionFrame;
+    }
+
+    public ShoppingCartFrame shoppingCartFrame() {
+        if (shoppingCartFrame == null) shoppingCartFrame = new ShoppingCartFrame(swingGraphic(), swingController());
+        return shoppingCartFrame;
+    }
+
+    public OrderFrame orderFrame() {
+        if (orderFrame == null) orderFrame = new OrderFrame(swingGraphic(), swingAction(), swingController());
+        return orderFrame;
+    }
+
+    public ReceiptNewTabFrame receiptNewTabFrame() {
+        if (receiptNewTabFrame == null) receiptNewTabFrame = new ReceiptNewTabFrame(swingGraphic());
+        return receiptNewTabFrame;
     }
 }

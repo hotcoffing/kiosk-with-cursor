@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static Domain.OrderState.CANCELED;
 import static Domain.OrderState.SHOPPING_CART;
 
 public class Order extends IdCounter {
@@ -19,13 +20,15 @@ public class Order extends IdCounter {
     private List<OrderItem> orderItems;
     private int totalPrice;
 
-    public Order(int tableNumber, OrderType orderType) {
+    public Order() {
         this.id = orderIdCounter.getAndIncrement();
-        this.tableNumber = tableNumber;
-        this.orderType = orderType;
 
-        // 기본 초기 상태 설정
-        this.orderState = OrderState.CANCELED;
+        // 기본 초기 상태 설정 (주문 전 변경)
+        this.tableNumber = 0;
+        this.orderType = null;
+        
+        // 기본 초기 상태 설정 (주문 후 설정)
+        this.orderState = CANCELED;
         this.orderTime = null;
         this.orderItems = null;
         this.totalPrice = 0;
