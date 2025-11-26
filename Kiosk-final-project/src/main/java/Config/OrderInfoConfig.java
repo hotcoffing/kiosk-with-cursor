@@ -10,7 +10,11 @@ import javax.sql.DataSource;
 
 public class OrderInfoConfig {
 
-    DataSource dataSource;
+    private final DataSource dataSource;
+
+    public OrderInfoConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public PrintReceiptService printReceiptService() {
         return new PrintReceiptServiceImpl(

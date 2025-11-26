@@ -1,4 +1,5 @@
 package SwingComponent;
 
-public class SwingActionImpl {
+public class SwingActionImpl implements SwingAction {
+
 }

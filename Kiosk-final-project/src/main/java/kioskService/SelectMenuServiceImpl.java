@@ -11,6 +11,10 @@ import static Domain.SnacksName.*;
 import static Domain.SoupName.*;
 
 public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMenuService {
+    
+    public SelectMenuServiceImpl(ShoppingCartRepository shoppingCartRepository) {
+        super(shoppingCartRepository);
+    }
 
     @Override
     public Category getMenuCategory(String categoryName) {

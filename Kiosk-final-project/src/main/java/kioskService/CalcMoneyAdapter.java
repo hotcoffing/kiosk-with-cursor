@@ -9,11 +9,13 @@ import java.util.List;
 
 public class CalcMoneyAdapter implements CalcMoneyInterface {
 
-    private final ShoppingCartRepository shoppingCartRepository;
+    protected final ShoppingCartRepository shoppingCartRepository;
 
+    // 에러 발생시 강제 종료
     public CalcMoneyAdapter() {
         shoppingCartRepository = null;
         System.out.println("Error : there is no repository");
+        System.exit(0);
     }
 
     public CalcMoneyAdapter(ShoppingCartRepository shoppingCartRepository) {

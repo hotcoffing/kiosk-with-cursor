@@ -10,10 +10,8 @@ import static Domain.OrderState.ORDERING;
 
 public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements ShoppingCartService {
 
-    private final ShoppingCartRepository shoppingCartRepository;
-
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
+        super(shoppingCartRepository);
     }
 
     @Override

@@ -7,10 +7,8 @@ import static Domain.IdCounter.initOrderItemIdCounter;
 
 public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
 
-    private final ShoppingCartRepository shoppingCartRepository;
-
     public OrderServiceImpl(ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
+        super(shoppingCartRepository);
     }
 
     @Override

@@ -1,10 +1,6 @@
-package kioskService;
+package SwingComponent;
 
-import Domain.MenuCategory;
-import Domain.MenuItem;
-import Domain.Order;
-
-import java.util.List;
+import Config.SwingConfig;
 
 public class Main {
     // 원칙 준수 삭제 체크리스트
@@ -12,6 +8,10 @@ public class Main {
     // 2. 사용하지 않는 Setter 메서드 삭제
 
     public static void main(String[] args) {
+        SwingConfig swingConfig = new SwingConfig();
+
+        StartFrame startFrame = swingConfig.startFrame();
+
         /*System.out.println("===== [Console Test Mode] 키오스크 로직 검증 시작 =====");
 
         // 1. 서비스 객체 생성 (스프링이 없으므로 직접 new로 생성)

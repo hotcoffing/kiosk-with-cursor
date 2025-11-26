@@ -1,4 +1,32 @@
 package SwingComponent;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class SwingGraphicImpl implements SwingGraphic {
+    // 레이블 생성 및 초기화
+    @Override
+    public JLabel makeLabel(String text, int width, int height, Font font, Color[] colorList) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        label.setSize(width, height);
+        label.setForeground(colorList[0]);
+        label.setBorder(BorderFactory.createLineBorder(colorList[1], 5));
+
+        return label;
+    }
+
+    // 버튼 생성 및 초기화
+    @Override
+    public JButton makeButton(String text, int width, int height, Font font, Color[] colorList) {
+        JButton button = new JButton(text);
+        button.setFont(font);
+        button.setSize(width, height);
+        button.setFocusPainted(false);
+        button.setForeground(colorList[0]);
+        button.setBorder(BorderFactory.createLineBorder(colorList[1], 5));
+        button.setBackground(colorList[2]);
+
+        return button;
+    }
 }

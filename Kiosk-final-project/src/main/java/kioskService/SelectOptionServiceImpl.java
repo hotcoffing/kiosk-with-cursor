@@ -15,6 +15,10 @@ import static Domain.OrderState.SHOPPING_CART;
 
 public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectOptionService {
 
+    public SelectOptionServiceImpl(ShoppingCartRepository shoppingCartRepository) {
+        super(shoppingCartRepository);
+    }
+
     List<Option> options = new ArrayList<>();
 
     @Override
