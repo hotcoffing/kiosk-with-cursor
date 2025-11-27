@@ -1,8 +1,10 @@
 package Domain;
 
-import Repository.OrderInfoRespositoryImpl;
+import java.util.concurrent.atomic.AtomicLong;
+
 import javax.sql.DataSource;
-import java.util.concurrent.atomic.*;
+
+import Repository.OrderInfoRespositoryImpl;
 
 // ID 카운터 관리 클래스
 // 주문 ID와 주문 항목 ID를 원자적으로 관리하고 데이터베이스와 동기화

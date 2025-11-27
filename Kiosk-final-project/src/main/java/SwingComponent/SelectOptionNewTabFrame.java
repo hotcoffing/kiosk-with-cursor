@@ -1,14 +1,32 @@
 package SwingComponent;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import Domain.*;
+import Domain.Category;
 import Domain.MenuItem;
+import Domain.Option;
+import Domain.OptionType;
+import Domain.Order;
+import Domain.OrderItem;
 import Static.OptionStatic;
 import kioskService.SelectOptionService;
 
@@ -45,9 +63,9 @@ public class SelectOptionNewTabFrame extends JFrame {
     JButton addToCartButton;
 
     // 현재 선택된 메뉴 아이템
-    private MenuItem currentMenuItem;
-    private Order currentOrder;
-    private List<JCheckBox> singleOptionCheckBoxes = new ArrayList<>();
+    private MenuItem nowMenuItem;
+    private Order nowOrder;
+    private List<JRadioButton> singleOptionRadioButtons = new ArrayList<>();
     private List<JCheckBox> multipleOptionCheckBoxes = new ArrayList<>();
     private Option selectedSingleOption = OptionStatic.getNormal(); // 기본값
 
@@ -77,16 +95,16 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     public void setMenuItem(MenuItem menuItem) {
-        this.currentMenuItem = menuItem;
+        this.nowMenuItem = menuItem;
         // 옵션 상태 초기화 (이전 메뉴의 옵션이 남지 않도록)
         selectedSingleOption = OptionStatic.getNormal();
-        singleOptionCheckBoxes.clear();
+        singleOptionRadioButtons.clear();
         multipleOptionCheckBoxes.clear();
         updateMenuDisplay();
     }
 
     public void setOrder(Order order) {
-        this.currentOrder = order;
+        this.nowOrder = order;
     }
 
     private void initSelectOptionNewTabFrame() {
@@ -129,12 +147,12 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void updateMenuDisplay() {
-        if (currentMenuItem == null) return;
+        if (nowMenuItem == null) return;
 
-        menuNameLabel.setText(currentMenuItem.getName());
+        menuNameLabel.setText(nowMenuItem.getName());
         
         // 옵션 체크박스 생성 (치킨 메뉴인 경우)
-        if (currentMenuItem.getCategory() == Category.CHICKEN) {
+        if (nowMenuItem.getCategory() == Category.CHICKEN) {
             createChickenOptions();
         } else {
             // 다른 메뉴는 옵션 없음
@@ -151,50 +169,39 @@ public class SelectOptionNewTabFrame extends JFrame {
 
     private void createChickenOptions() {
         optionsPanel.removeAll();
-        singleOptionCheckBoxes.clear();
+        singleOptionRadioButtons.clear();
         multipleOptionCheckBoxes.clear();
         
         // 단일 옵션을 기본값으로 초기화
         selectedSingleOption = OptionStatic.getNormal();
 
-        // 단일 선택 옵션 (라디오 버튼처럼 동작)
+        // 단일 선택 옵션 (라디오 버튼 사용)
         ButtonGroup singleOptionGroup = new ButtonGroup();
         
         Option[] options = OptionStatic.getChickenOption();
         for (Option option : options) {
             if (option.getType() == OptionType.SINGLE) {
-                JCheckBox checkBox = new JCheckBox(option.getName() + " +" + option.getPrice() + "원");
-                checkBox.setFont(optionFont);
+                JRadioButton radioButton = new JRadioButton(option.getName() + " +" + option.getPrice() + "원");
+                radioButton.setFont(optionFont);
                 boolean isDefault = (option == OptionStatic.getNormal());
-                checkBox.setSelected(isDefault); // 기본 선택
+                radioButton.setSelected(isDefault); // 기본 선택
                 
                 // 기본 옵션이면 selectedSingleOption 업데이트
                 if (isDefault) {
                     selectedSingleOption = option;
                 }
                 
-                // 단일 옵션은 하나만 선택 가능하도록
-                checkBox.addActionListener(e -> {
-                    if (checkBox.isSelected()) {
-                        // 다른 단일 옵션 해제
-                        for (JCheckBox cb : singleOptionCheckBoxes) {
-                            if (cb != checkBox) {
-                                cb.setSelected(false);
-                            }
-                        }
+                // 라디오 버튼 선택 시 가격 업데이트
+                radioButton.addActionListener(e -> {
+                    if (radioButton.isSelected()) {
                         selectedSingleOption = option;
                         updatePrice();
-                    } else {
-                        // 기본 옵션은 항상 선택되어야 함
-                        if (option == OptionStatic.getNormal()) {
-                            checkBox.setSelected(true);
-                        }
                     }
                 });
                 
-                singleOptionCheckBoxes.add(checkBox);
-                singleOptionGroup.add(checkBox);
-                optionsPanel.add(checkBox);
+                singleOptionRadioButtons.add(radioButton);
+                singleOptionGroup.add(radioButton);
+                optionsPanel.add(radioButton);
             } else {
                 // 다중 선택 옵션
                 JCheckBox checkBox = new JCheckBox(option.getName() + " +" + option.getPrice() + "원");
@@ -209,9 +216,9 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void updatePrice() {
-        if (currentMenuItem == null) return;
+        if (nowMenuItem == null) return;
 
-        int totalPrice = currentMenuItem.getOriginalPrice();
+        int totalPrice = nowMenuItem.getOriginalPrice();
         
         // 단일 옵션 가격 추가
         if (selectedSingleOption != null) {
@@ -245,13 +252,13 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void addToShoppingCart() {
-        if (currentMenuItem == null || currentOrder == null) return;
+        if (nowMenuItem == null || nowOrder == null) return;
 
         // OrderItem 생성
-        OrderItem orderItem = new OrderItem(currentMenuItem);
+        OrderItem orderItem = new OrderItem(nowMenuItem);
 
         // 옵션이 있는 메뉴(치킨)인 경우에만 옵션 설정
-        if (currentMenuItem.getCategory() == Category.CHICKEN) {
+        if (nowMenuItem.getCategory() == Category.CHICKEN) {
             // 옵션 설정
             List<Option> multipleOptions = new ArrayList<>();
             for (JCheckBox checkBox : multipleOptionCheckBoxes) {
@@ -283,7 +290,7 @@ public class SelectOptionNewTabFrame extends JFrame {
 
         // 메뉴 선택 화면으로 돌아가기
         if (selectOptionService != null) {
-            selectOptionService.goMenu(currentOrder);
+            selectOptionService.goMenu(nowOrder);
         }
         
         // 옵션 선택 화면 닫기

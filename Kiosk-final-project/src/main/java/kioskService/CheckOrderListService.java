@@ -1,7 +1,8 @@
 package kioskService;
 
-import Domain.*;
-import java.util.*;
+import Domain.OrderItem;
+
+import java.util.List;
 
 // 주문 내역 조회 서비스 인터페이스
 // 테이블 번호와 고객명으로 주문 내역을 조회하는 기능을 정의

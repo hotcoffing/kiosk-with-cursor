@@ -1,6 +1,12 @@
 package kioskService;
 
-import Domain.*;
+import Domain.Category;
+import Domain.ChickenName;
+import Domain.DrinkName;
+import Domain.Order;
+import Domain.SidesName;
+import Domain.SnacksName;
+import Domain.SoupName;
 
 // 메뉴 선택 서비스 인터페이스
 // 메뉴 카테고리 및 메뉴 이름 조회, 주문 상태 변경 기능을 정의

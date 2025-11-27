@@ -1,7 +1,9 @@
 package Domain;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static Domain.OrderState.*;
 
@@ -35,7 +37,7 @@ public class OrderItem extends IdCounter implements Serializable {
     }
 
     // 옵션 설정 (Swing actionListener 활용)
-    public void setOptions(Option singleOption,  List<Option> multipleOption) {
+    public void setOptions(Option singleOption, List<Option> multipleOption) {
         if (singleOption == null) {
             throw new IllegalArgumentException("single option can't be null");
         }
@@ -61,8 +63,8 @@ public class OrderItem extends IdCounter implements Serializable {
         }
 
         if (!multipleOptions.isEmpty()) {
-            for (Option EachMultipleOption : multipleOptions) {
-                multipleOptionPrice += EachMultipleOption.getPrice();
+            for (Option eachMultipleOption : multipleOptions) {
+                multipleOptionPrice += eachMultipleOption.getPrice();
             }
         }
 

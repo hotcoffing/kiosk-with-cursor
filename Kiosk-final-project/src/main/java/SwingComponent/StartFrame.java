@@ -1,7 +1,16 @@
 package SwingComponent;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 // 시작 화면 프레임 클래스
 // 메뉴 선택, 주문 내역 조회 버튼이 있는 초기 화면
@@ -18,14 +27,14 @@ public class StartFrame extends JFrame {
     Font labelFont = new Font(Font.DIALOG, Font.BOLD, 80);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color [] labelColorList = new  Color[]{
-            new Color(255,0,0),
-            new Color(255,0,0)
+    Color[] labelColorList = new Color[]{
+            new Color(255, 0, 0),
+            new Color(255, 0, 0)
     };
-    Color [] buttonColorList = new  Color[]{
-            new Color(255,0,0),
-            new Color(255,0,0),
-            new Color(255,255,255)
+    Color[] buttonColorList = new Color[]{
+            new Color(255, 0, 0),
+            new Color(255, 0, 0),
+            new Color(255, 255, 255)
     };
 
     // 컴포넌트 필드 선언
@@ -85,7 +94,6 @@ public class StartFrame extends JFrame {
 
         // 하단 패널 설정
         JPanel bottomPanel = new JPanel();
-        //bottomPanel.setLayout(new GridBagLayout()); // 버튼들을 중앙에 모으기 위해 GridBagLayout 사용
         bottomPanel.setBackground(Color.WHITE);
 
         // 하단 패널 설정

@@ -1,7 +1,10 @@
 package Config;
 
-import Repository.*;
-import kioskService.*;
+import Repository.OrderInfoRespositoryImpl;
+import kioskService.CheckOrderListService;
+import kioskService.CheckOrderListServiceImpl;
+import kioskService.PrintReceiptService;
+import kioskService.PrintReceiptServiceImpl;
 
 import javax.sql.DataSource;
 

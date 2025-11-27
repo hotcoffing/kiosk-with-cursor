@@ -1,7 +1,10 @@
 package kioskService;
 
-import Domain.*;
-import java.util.*;
+import Domain.Category;
+import Domain.Option;
+import Domain.Order;
+
+import java.util.List;
 
 // 옵션 선택 서비스 인터페이스
 // 메뉴 옵션 조회 및 주문 상태 변경 기능을 정의

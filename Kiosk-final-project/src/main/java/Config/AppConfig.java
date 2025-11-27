@@ -1,7 +1,8 @@
 package Config;
 
-import com.zaxxer.hikari.*;
-import javax.sql.*;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 
 // 애플리케이션 데이터베이스 연결 설정 클래스
 // HikariCP를 사용하여 MySQL 데이터베이스 연결 풀을 생성

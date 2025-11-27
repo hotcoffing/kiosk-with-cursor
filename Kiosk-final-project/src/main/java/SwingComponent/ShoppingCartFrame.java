@@ -1,13 +1,29 @@
 package SwingComponent;
 
-import Domain.*;
-import kioskService.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import Domain.Order;
+import Domain.OrderItem;
+import Domain.OrderState;
+import kioskService.ShoppingCartService;
 
 // 장바구니 프레임 클래스
 // 장바구니에 담긴 주문 항목을 표시하고 수량 조절, 주문하기 기능을 제공하는 화면
@@ -41,7 +57,7 @@ public class ShoppingCartFrame extends JFrame {
     JButton backButton;
     JButton orderButton;
 
-    private Order currentOrder;
+    private Order nowOrder;
 
     public ShoppingCartFrame(SwingGraphic swingGraphic, SwingController swingController) {
         this.swingGraphic = swingGraphic;
@@ -51,8 +67,8 @@ public class ShoppingCartFrame extends JFrame {
         this.contentPane = new JPanel();
 
         // Order 객체 초기화
-        currentOrder = new Order();
-        currentOrder.setOrderState(OrderState.SHOPPING_CART);
+        nowOrder = new Order();
+        nowOrder.setOrderState(OrderState.SHOPPING_CART);
 
         // 컴포넌트 초기화
         initShoppingCartFrame();
@@ -73,7 +89,7 @@ public class ShoppingCartFrame extends JFrame {
     }
 
     public void setOrder(Order order) {
-        this.currentOrder = order;
+        this.nowOrder = order;
         updateOrderItems();
     }
 
@@ -89,7 +105,7 @@ public class ShoppingCartFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                currentOrder.setTableNumber(Integer.parseInt(tableNum));
+                nowOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -109,7 +125,7 @@ public class ShoppingCartFrame extends JFrame {
 
         backButton.addActionListener(e -> {
             if (shoppingCartService != null) {
-                shoppingCartService.goChooseOrder(currentOrder);
+                shoppingCartService.goChooseOrder(nowOrder);
             }
             swingController.moveSelectMenu(this);
         });
@@ -129,7 +145,7 @@ public class ShoppingCartFrame extends JFrame {
             }
             
             if (shoppingCartService != null) {
-                shoppingCartService.goOrder(currentOrder);
+                shoppingCartService.goOrder(nowOrder);
             }
             swingController.moveOrder(this);
         });
@@ -195,23 +211,28 @@ public class ShoppingCartFrame extends JFrame {
         JLabel menuLabel = new JLabel(menuInfo);
         menuLabel.setFont(itemFont);
 
-        // 옵션 정보
+        // 옵션 정보 (순수 Java/Swing 방식 - JTextArea 사용)
         String optionsStr = item.getOptionsString();
-        JLabel optionLabel = new JLabel();
+        JTextArea optionTextArea = new JTextArea();
         Font optionFont = new Font(Font.DIALOG, Font.PLAIN, 14);
-        optionLabel.setFont(optionFont);
-        optionLabel.setForeground(Color.GRAY);
+        optionTextArea.setFont(optionFont);
+        optionTextArea.setForeground(Color.GRAY);
+        optionTextArea.setBackground(Color.WHITE);
+        optionTextArea.setEditable(false);
+        optionTextArea.setFocusable(false);
+        optionTextArea.setOpaque(false);
+        optionTextArea.setBorder(null);
         if (!optionsStr.isEmpty()) {
-            optionLabel.setText("<html>" + optionsStr.replace("\n", "<br>") + "</html>");
+            optionTextArea.setText(optionsStr);
         } else {
-            optionLabel.setText("");
+            optionTextArea.setText("");
         }
 
         // 메뉴 정보와 옵션을 세로로 배치
         JPanel menuInfoPanel = new JPanel(new BorderLayout(0, 3));
         menuInfoPanel.setBackground(Color.WHITE);
         menuInfoPanel.add(menuLabel, BorderLayout.NORTH);
-        menuInfoPanel.add(optionLabel, BorderLayout.CENTER);
+        menuInfoPanel.add(optionTextArea, BorderLayout.CENTER);
 
         // 가격
         int itemPrice = item.getPriceWithOptions() * item.getQuantity();

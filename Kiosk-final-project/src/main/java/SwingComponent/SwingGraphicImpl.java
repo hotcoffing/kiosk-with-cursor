@@ -1,7 +1,10 @@
 package SwingComponent;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Font;
 
 // Swing UI 컴포넌트 생성 구현 클래스
 // 라벨과 버튼을 일관된 스타일로 생성하는 기능을 구현

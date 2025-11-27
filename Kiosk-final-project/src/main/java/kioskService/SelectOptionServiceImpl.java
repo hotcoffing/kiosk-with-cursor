@@ -1,12 +1,17 @@
 package kioskService;
 
-import Domain.*;
-import Repository.*;
-import Static.*;
+import Domain.Category;
+import Domain.MenuItem;
+import Domain.Option;
+import Domain.Order;
+import Repository.ShoppingCartRepository;
+import Static.OptionStatic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static Domain.OrderState.*;
+import static Domain.OrderState.CHOOSE_ORDER;
+import static Domain.OrderState.SHOPPING_CART;
 
 // 옵션 선택 서비스 구현 클래스
 // 메뉴 옵션을 조회하고 장바구니에 추가하는 기능을 구현

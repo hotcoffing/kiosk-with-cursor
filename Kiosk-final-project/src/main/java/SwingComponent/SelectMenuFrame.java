@@ -1,16 +1,35 @@
 package SwingComponent;
 
-import Domain.*;
-import Domain.MenuItem;
-import Static.*;
-import kioskService.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import Domain.MenuItem;
+import Domain.Order;
+import Domain.OrderItem;
+import Domain.OrderState;
+import Static.MenuItemStatic;
+import kioskService.SelectMenuService;
+import kioskService.ShoppingCartService;
 
 // 메뉴 선택 프레임 클래스
 // 카테고리별 메뉴를 표시하고 선택하여 장바구니에 추가하는 화면
@@ -50,8 +69,8 @@ public class SelectMenuFrame extends JFrame {
     
     // 현재 선택된 카테고리
     private String selectedCategory = "치킨";
-    private Order currentOrder;
-    private int currentTotal = 0;
+    private Order nowOrder;
+    private int nowTotal = 0;
 
     // SelectMenuFrame 생성자
     public SelectMenuFrame(SwingGraphic swingGraphic, SwingController swingController) {
@@ -60,8 +79,8 @@ public class SelectMenuFrame extends JFrame {
         this.swingController = swingController;
         
         // Order 객체 초기화
-        currentOrder = new Order();
-        currentOrder.setOrderState(OrderState.CHOOSE_ORDER);
+        nowOrder = new Order();
+        nowOrder.setOrderState(OrderState.CHOOSE_ORDER);
 
         // 메인 콘텐츠펜 판넬 생성
         this.contentPane = new JPanel();
@@ -86,7 +105,7 @@ public class SelectMenuFrame extends JFrame {
     }
 
     public void setOrder(Order order) {
-        this.currentOrder = order;
+        this.nowOrder = order;
         updateTotal();
     }
 
@@ -102,7 +121,7 @@ public class SelectMenuFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                currentOrder.setTableNumber(Integer.parseInt(tableNum));
+                nowOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -141,7 +160,7 @@ public class SelectMenuFrame extends JFrame {
 
         shoppingCartButton.addActionListener(e -> {
             if (selectMenuService != null) {
-                selectMenuService.goShoppingCart(currentOrder);
+                selectMenuService.goShoppingCart(nowOrder);
             }
             swingController.moveShoppingCart(this);
         });
@@ -161,7 +180,7 @@ public class SelectMenuFrame extends JFrame {
             }
             
             if (selectMenuService != null) {
-                selectMenuService.goOrder(currentOrder);
+                selectMenuService.goOrder(nowOrder);
             }
             swingController.moveOrder(this);
         });
@@ -258,9 +277,9 @@ public class SelectMenuFrame extends JFrame {
         // 장바구니의 총 금액 계산
         if (shoppingCartService instanceof kioskService.CalcMoneyInterface) {
             kioskService.CalcMoneyInterface calcMoney = (kioskService.CalcMoneyInterface) shoppingCartService;
-            currentTotal = calcMoney.getTotalPriceUseShoppingCart();
+            nowTotal = calcMoney.getTotalPriceUseShoppingCart();
         }
-        totalLabel.setText("총계: " + currentTotal + "원");
+        totalLabel.setText("총계: " + nowTotal + "원");
     }
 
     // 컨텐츠펜 판넬에 추가

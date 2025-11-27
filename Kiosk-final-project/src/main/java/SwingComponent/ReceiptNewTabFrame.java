@@ -4,9 +4,18 @@ import Domain.Order;
 import Domain.OrderItem;
 import kioskService.PrintReceiptService;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 // 영수증 출력 프레임 클래스
 // 주문 완료 후 주문 내역, 총계, 주문 시간을 표시하는 영수증 새 창

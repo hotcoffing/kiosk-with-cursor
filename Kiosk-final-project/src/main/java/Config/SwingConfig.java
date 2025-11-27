@@ -1,9 +1,24 @@
 package Config;
 
-import Domain.*;
-import Repository.*;
-import SwingComponent.*;
-import kioskService.*;
+import Domain.Order;
+import Domain.OrderState;
+import Repository.OrderInfoRespositoryImpl;
+import Repository.ShoppingCartRepository;
+import SwingComponent.CheckOrderListNewTabFrame;
+import SwingComponent.OrderFrame;
+import SwingComponent.ReceiptNewTabFrame;
+import SwingComponent.SelectMenuFrame;
+import SwingComponent.SelectOptionNewTabFrame;
+import SwingComponent.ShoppingCartFrame;
+import SwingComponent.StartFrame;
+import SwingComponent.SwingController;
+import SwingComponent.SwingControllerImpl;
+import SwingComponent.SwingGraphic;
+import SwingComponent.SwingGraphicImpl;
+import kioskService.CheckOrderListService;
+import kioskService.PaymentService;
+import kioskService.PaymentServiceImpl;
+import kioskService.PrintReceiptService;
 
 // Swing UI 컴포넌트 설정 클래스
 // 모든 프레임, 서비스, Repository를 싱글톤 패턴으로 생성 및 관리
@@ -28,7 +43,7 @@ public class SwingConfig {
     private PaymentService paymentService;
 
     // Order 객체 (전역 관리)
-    private Order currentOrder;
+    private Order nowOrder;
 
     // 공통 제어자
     public SwingGraphic swingGraphic() {
@@ -81,16 +96,16 @@ public class SwingConfig {
         return paymentService;
     }
 
-    public Order getCurrentOrder() {
-        if (currentOrder == null) {
-            currentOrder = new Order();
-            currentOrder.setOrderState(OrderState.ORDERING);
+    public Order getNowOrder() {
+        if (nowOrder == null) {
+            nowOrder = new Order();
+            nowOrder.setOrderState(OrderState.ORDERING);
         }
-        return currentOrder;
+        return nowOrder;
     }
     
-    public void setCurrentOrder(Order order) {
-        this.currentOrder = order;
+    public void setNowOrder(Order order) {
+        this.nowOrder = order;
     }
 
     // Frame 공유 연결
@@ -110,7 +125,7 @@ public class SwingConfig {
             // Repository 주입
             selectMenuFrame.setShoppingCartRepository(shoppingCartRepository());
             // Order 객체 설정
-            selectMenuFrame.setOrder(getCurrentOrder());
+            selectMenuFrame.setOrder(getNowOrder());
         }
         return selectMenuFrame;
     }
@@ -134,7 +149,7 @@ public class SwingConfig {
             // Repository 주입
             selectOptionNewTabFrame.setShoppingCartRepository(shoppingCartRepository());
             // Order 객체 설정
-            selectOptionNewTabFrame.setOrder(getCurrentOrder());
+            selectOptionNewTabFrame.setOrder(getNowOrder());
         }
         return selectOptionNewTabFrame;
     }
@@ -147,7 +162,7 @@ public class SwingConfig {
             // Repository 주입
             shoppingCartFrame.setShoppingCartRepository(shoppingCartRepository());
             // Order 객체 설정
-            shoppingCartFrame.setOrder(getCurrentOrder());
+            shoppingCartFrame.setOrder(getNowOrder());
         }
         return shoppingCartFrame;
     }
@@ -163,7 +178,7 @@ public class SwingConfig {
             // Repository 주입
             orderFrame.setShoppingCartRepository(shoppingCartRepository());
             // Order 객체 설정
-            orderFrame.setOrder(getCurrentOrder());
+            orderFrame.setOrder(getNowOrder());
         }
         return orderFrame;
     }

@@ -1,14 +1,41 @@
 package kioskService;
 
-import Domain.*;
-import Repository.*;
+import Domain.Category;
+import Domain.ChickenName;
+import Domain.DrinkName;
+import Domain.Order;
+import Domain.OrderState;
+import Domain.SidesName;
+import Domain.SnacksName;
+import Domain.SoupName;
+import Repository.ShoppingCartRepository;
 
-import static Domain.Category.*;
-import static Domain.ChickenName.*;
-import static Domain.DrinkName.*;
-import static Domain.SidesName.*;
-import static Domain.SnacksName.*;
-import static Domain.SoupName.*;
+import static Domain.Category.CHICKEN;
+import static Domain.Category.DRINKS;
+import static Domain.Category.SIDES;
+import static Domain.Category.SNACKS;
+import static Domain.Category.SOUP;
+import static Domain.ChickenName.FRIED;
+import static Domain.ChickenName.FRINKLE;
+import static Domain.ChickenName.GOLDKING;
+import static Domain.ChickenName.MATCHOKING;
+import static Domain.ChickenName.QUASACKING;
+import static Domain.ChickenName.SEASONED;
+import static Domain.DrinkName.BEER;
+import static Domain.DrinkName.CIDER;
+import static Domain.DrinkName.COKE;
+import static Domain.DrinkName.SOJU;
+import static Domain.SidesName.CHEESEBALL;
+import static Domain.SidesName.FRENCHFRIES;
+import static Domain.SidesName.SOTTEOK;
+import static Domain.SidesName.TTEOKBOKKI;
+import static Domain.SnacksName.JIWPO;
+import static Domain.SnacksName.MUKTAE;
+import static Domain.SnacksName.SQUID;
+import static Domain.SoupName.JJAMBBONG;
+import static Domain.SoupName.ODEN;
+import static Domain.SoupName.SEASHELL;
+import static Domain.SoupName.SUNDAE;
 
 // 메뉴 선택 서비스 구현 클래스
 // 메뉴 카테고리 및 메뉴 이름을 조회하고 주문 상태를 관리하는 기능을 구현

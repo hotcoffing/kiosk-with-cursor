@@ -1,6 +1,11 @@
 package Repository;
 
-import Domain.*;
+import Domain.IdCounter;
+import Domain.Order;
+import Domain.OrderItem;
+import Domain.OrderState;
+import Domain.OrderType;
+import Domain.PaymentType;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;

@@ -1,12 +1,33 @@
 package SwingComponent;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import Domain.*;
+import Domain.Order;
+import Domain.OrderItem;
+import Domain.OrderState;
+import Domain.OrderType;
+import Domain.PaymentType;
 import kioskService.OrderService;
 import kioskService.PaymentService;
 
@@ -48,7 +69,7 @@ public class OrderFrame extends JFrame {
     JPanel paymentButtonsPanel;
     JButton backButton;
 
-    private Order currentOrder;
+    private Order nowOrder;
     private PaymentType selectedPaymentType;
 
     public OrderFrame(SwingGraphic swingGraphic, SwingController swingController) {
@@ -59,10 +80,10 @@ public class OrderFrame extends JFrame {
         this.contentPane = new JPanel();
 
         // Order 객체 초기화
-        currentOrder = new Order();
-        currentOrder.setOrderState(OrderState.ORDERING);
-        currentOrder.setTableNumber(1); // 기본값 TB 1
-        currentOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
+        nowOrder = new Order();
+        nowOrder.setOrderState(OrderState.ORDERING);
+        nowOrder.setTableNumber(1); // 기본값 TB 1
+        nowOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
 
         // 컴포넌트 초기화
         initOrderFrame();
@@ -84,7 +105,7 @@ public class OrderFrame extends JFrame {
     }
 
     public void setOrder(Order order) {
-        this.currentOrder = order;
+        this.nowOrder = order;
         updateOrderItems();
     }
 
@@ -105,7 +126,7 @@ public class OrderFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                currentOrder.setTableNumber(Integer.parseInt(tableNum));
+                nowOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -130,11 +151,11 @@ public class OrderFrame extends JFrame {
         orderTypeButtonGroup.add(takeoutRadioButton);
         
         dineInRadioButton.addActionListener(e -> {
-            currentOrder.setOrderType(OrderType.DINE_IN);
+            nowOrder.setOrderType(OrderType.DINE_IN);
         });
         
         takeoutRadioButton.addActionListener(e -> {
-            currentOrder.setOrderType(OrderType.TAKE_OUT);
+            nowOrder.setOrderType(OrderType.TAKE_OUT);
         });
 
         // 결제 방식 버튼 패널
@@ -170,7 +191,7 @@ public class OrderFrame extends JFrame {
         backButton = swingGraphic.makeButton("뒤로 가기", 200, 50, buttonFont, buttonColorList);
         backButton.addActionListener(e -> {
             if (orderService != null) {
-                orderService.goBack(currentOrder);
+                orderService.goBack(nowOrder);
             }
             swingController.moveShoppingCart(this);
         });
@@ -236,32 +257,37 @@ public class OrderFrame extends JFrame {
         JLabel menuLabel = new JLabel(menuInfo);
         menuLabel.setFont(itemFont);
 
-        // 옵션 정보
+        // 옵션 정보 (순수 Java/Swing 방식 - JTextArea 사용)
         String optionsStr = item.getOptionsString();
-        JLabel optionLabel = new JLabel();
+        JTextArea optionTextArea = new JTextArea();
         Font optionFont = new Font(Font.DIALOG, Font.PLAIN, 14);
-        optionLabel.setFont(optionFont);
-        optionLabel.setForeground(Color.GRAY);
+        optionTextArea.setFont(optionFont);
+        optionTextArea.setForeground(Color.GRAY);
+        optionTextArea.setBackground(Color.WHITE);
+        optionTextArea.setEditable(false);
+        optionTextArea.setFocusable(false);
+        optionTextArea.setOpaque(false);
+        optionTextArea.setBorder(null);
         if (!optionsStr.isEmpty()) {
-            optionLabel.setText("<html>" + optionsStr.replace("\n", "<br>") + "</html>");
+            optionTextArea.setText(optionsStr);
         } else {
-            optionLabel.setText("");
+            optionTextArea.setText("");
         }
 
         // 메뉴 정보와 옵션을 세로로 배치
         JPanel menuInfoPanel = new JPanel(new BorderLayout(0, 3));
         menuInfoPanel.setBackground(Color.WHITE);
         menuInfoPanel.add(menuLabel, BorderLayout.NORTH);
-        menuInfoPanel.add(optionLabel, BorderLayout.CENTER);
+        menuInfoPanel.add(optionTextArea, BorderLayout.CENTER);
 
         // 가격
         int itemPrice = item.getPriceWithOptions() * item.getQuantity();
-        JLabel priceLabel = new JLabel(itemPrice + "원");
-        priceLabel.setFont(itemFont);
-        priceLabel.setForeground(Color.RED);
+        JLabel itemPriceLabel = new JLabel(itemPrice + "원");
+        itemPriceLabel.setFont(itemFont);
+        itemPriceLabel.setForeground(Color.RED);
 
         infoPanel.add(menuInfoPanel, BorderLayout.CENTER);
-        infoPanel.add(priceLabel, BorderLayout.EAST);
+        infoPanel.add(itemPriceLabel, BorderLayout.EAST);
 
         panel.add(imageLabel, BorderLayout.WEST);
         panel.add(infoPanel, BorderLayout.CENTER);
@@ -270,11 +296,11 @@ public class OrderFrame extends JFrame {
     }
 
     private void processPayment() {
-        if (currentOrder == null || selectedPaymentType == null) return;
+        if (nowOrder == null || selectedPaymentType == null) return;
 
         // Order 상태 확인 및 재설정 (ORDERING 상태가 아니면 재설정)
-        if (currentOrder.getOrderState() != OrderState.ORDERING) {
-            currentOrder.setOrderState(OrderState.ORDERING);
+        if (nowOrder.getOrderState() != OrderState.ORDERING) {
+            nowOrder.setOrderState(OrderState.ORDERING);
         }
 
         // 장바구니가 비어있는지 확인
@@ -290,8 +316,8 @@ public class OrderFrame extends JFrame {
             }
         }
 
-        // 고객 이름 입력 받기
-        String customerName = JOptionPane.showInputDialog(this, "고객 이름을 입력하세요:", "고객 정보", JOptionPane.PLAIN_MESSAGE);
+        // 주문자 이름 입력 받기
+        String customerName = JOptionPane.showInputDialog(this, "주문자 이름을 입력하세요:", "주문자 정보", JOptionPane.PLAIN_MESSAGE);
 
         if (customerName == null) {
             return;
@@ -299,32 +325,32 @@ public class OrderFrame extends JFrame {
 
         customerName = customerName.trim();
         if (customerName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "고객 이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "주문자 이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // 주문 완료 처리
         if (orderService != null) {
-            orderService.completeOrder(currentOrder, selectedPaymentType, customerName);
+            orderService.completeOrder(nowOrder, selectedPaymentType, customerName);
 
             // 저장된 주문 ID 가져오기 (addOrder에서 업데이트된 ID)
             Long savedOrderId = null;
             if (paymentService != null) {
-                savedOrderId = paymentService.saveOrder(currentOrder);
+                savedOrderId = paymentService.saveOrder(nowOrder);
             }
             
             // 저장 실패 시 현재 ID 사용
             if (savedOrderId == null) {
-                savedOrderId = currentOrder.getId();
+                savedOrderId = nowOrder.getId();
             }
             
             // 새로운 Order 객체 생성 (다음 주문을 위해)
             // Order의 기본 생성자는 CANCELED 상태로 초기화하므로 ORDERING으로 변경 필요
-            currentOrder = new Order();
-            currentOrder.setOrderState(OrderState.ORDERING);
-            currentOrder.setTableNumber(1); // 기본값 TB 1
-            currentOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
-            setOrder(currentOrder);
+            nowOrder = new Order();
+            nowOrder.setOrderState(OrderState.ORDERING);
+            nowOrder.setTableNumber(1); // 기본값 TB 1
+            nowOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
+            setOrder(nowOrder);
             
             // 라디오 버튼 초기화
             dineInRadioButton.setSelected(true);

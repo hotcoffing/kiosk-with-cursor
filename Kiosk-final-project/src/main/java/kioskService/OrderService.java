@@ -1,6 +1,7 @@
 package kioskService;
 
-import Domain.*;
+import Domain.Order;
+import Domain.PaymentType;
 
 // 주문 서비스 인터페이스
 // 주문 항목 수량 조절, 주문 완료 처리, 주문 상태 변경 기능을 정의

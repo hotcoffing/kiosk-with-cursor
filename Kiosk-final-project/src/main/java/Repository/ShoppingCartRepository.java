@@ -1,8 +1,8 @@
 package Repository;
 
-import Domain.*;
+import Domain.OrderItem;
 
-import java.util.*;
+import java.util.List;
 
 // 장바구니 저장소 인터페이스
 // 장바구니에 주문 항목을 추가, 삭제, 조회하는 기능을 정의

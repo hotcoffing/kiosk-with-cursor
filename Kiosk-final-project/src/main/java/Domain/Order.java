@@ -1,11 +1,10 @@
 package Domain;
 
 import java.io.Serializable;
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.atomic.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import static Domain.OrderState.*;
+import static Domain.OrderState.CANCELED;
 
 // 주문 도메인 클래스
 // 테이블 번호, 주문 유형, 결제 정보, 주문 항목 등을 포함하는 주문 정보를 관리
