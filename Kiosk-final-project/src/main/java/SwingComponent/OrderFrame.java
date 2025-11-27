@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import Config.ShoppingCartConfig;
 import Domain.Order;
 import Domain.OrderItem;
 import Domain.OrderState;
@@ -28,11 +29,13 @@ import Domain.OrderType;
 import Domain.PaymentType;
 import kioskService.OrderService;
 import kioskService.PaymentService;
+import kioskService.PaymentServiceImpl;
 
 public class OrderFrame extends JFrame {
     private final SwingGraphic swingGraphic;
     private final SwingAction swingAction;
     private final SwingController swingController;
+    private final ShoppingCartConfig shoppingCartConfig;
     private OrderService orderService;
     private PaymentService paymentService;
     private Repository.ShoppingCartRepository shoppingCartRepository;
@@ -68,20 +71,27 @@ public class OrderFrame extends JFrame {
     JPanel paymentButtonsPanel;
     JButton backButton;
 
-    private Order currentOrder;
+    private Order nowOrder;
     private PaymentType selectedPaymentType;
 
-    public OrderFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController) {
+    public OrderFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController, ShoppingCartConfig shoppingCartConfig) {
         this.swingGraphic = swingGraphic;
         this.swingAction = swingAction;
         this.swingController = swingController;
+        this.shoppingCartConfig = shoppingCartConfig;
+        
+        // ShoppingCartConfig를 통해 서비스와 레포지토리 초기화
+        this.orderService = shoppingCartConfig.orderService();
+        this.shoppingCartRepository = shoppingCartConfig.shoppingCartRepository();
+        // PaymentService는 별도로 생성
+        this.paymentService = new PaymentServiceImpl();
 
         // 메인 콘텐츠펜 판넬 생성
         this.contentPane = new JPanel();
 
         // Order 객체 초기화
-        currentOrder = new Order();
-        currentOrder.setOrderState(OrderState.ORDERING);
+        nowOrder = new Order();
+        nowOrder.setOrderState(OrderState.ORDERING);
 
         // 컴포넌트 초기화
         initOrderFrame();
@@ -93,17 +103,8 @@ public class OrderFrame extends JFrame {
         setContentPane(contentPane);
     }
 
-    public void setServices(OrderService orderService, PaymentService paymentService) {
-        this.orderService = orderService;
-        this.paymentService = paymentService;
-    }
-
-    public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
-    }
-
     public void setOrder(Order order) {
-        this.currentOrder = order;
+        this.nowOrder = order;
         updateOrderItems();
     }
 
@@ -123,7 +124,7 @@ public class OrderFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                currentOrder.setTableNumber(Integer.parseInt(tableNum));
+                nowOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -142,9 +143,9 @@ public class OrderFrame extends JFrame {
         takeoutCheckBox.setFont(labelFont);
         takeoutCheckBox.addActionListener(e -> {
             if (takeoutCheckBox.isSelected()) {
-                currentOrder.setOrderType(OrderType.TAKE_OUT);
+                nowOrder.setOrderType(OrderType.TAKE_OUT);
             } else {
-                currentOrder.setOrderType(OrderType.DINE_IN);
+                nowOrder.setOrderType(OrderType.DINE_IN);
             }
         });
 
@@ -181,7 +182,7 @@ public class OrderFrame extends JFrame {
         backButton = swingGraphic.makeButton("뒤로 가기", 200, 50, buttonFont, buttonColorList);
         backButton.addActionListener(e -> {
             if (orderService != null) {
-                orderService.goBack(currentOrder);
+                orderService.goBack(nowOrder);
             }
             swingController.moveShoppingCart(this);
         });
@@ -281,7 +282,7 @@ public class OrderFrame extends JFrame {
     }
 
     private void processPayment() {
-        if (currentOrder == null || selectedPaymentType == null) return;
+        if (nowOrder == null || selectedPaymentType == null) return;
 
         // 장바구니가 비어있는지 확인
         if (shoppingCartRepository != null) {
@@ -306,7 +307,7 @@ public class OrderFrame extends JFrame {
 
         // 주문 완료 처리
         if (orderService != null) {
-            orderService.completeOrder(currentOrder, selectedPaymentType, customerName.trim());
+            orderService.completeOrder(nowOrder, selectedPaymentType, customerName.trim());
             
             // 영수증 화면 열기
             swingController.openReceipt(this);

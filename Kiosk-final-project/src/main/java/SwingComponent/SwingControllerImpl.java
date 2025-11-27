@@ -37,7 +37,7 @@ public class SwingControllerImpl implements SwingController {
 
     // startFrame -> checkOrderListNewTabFrame (새 창 생성)
     @Override
-    public void openCheckOrderList(JFrame currentFrame) {
+    public void openCheckOrderList(JFrame nowFrame) {
         if (checkOrderListFrame != null) {
             checkOrderListFrame.setVisible(true);
             System.out.println("주문 내역 새 창 열기");
@@ -46,9 +46,9 @@ public class SwingControllerImpl implements SwingController {
 
     // startFrame -> selectMenuFrame
     @Override
-    public void moveSelectMenu(JFrame currentFrame) {
+    public void moveSelectMenu(JFrame nowFrame) {
         if (selectMenuFrame != null) {
-            currentFrame.setVisible(false);
+            nowFrame.setVisible(false);
             selectMenuFrame.setVisible(true);
             // 장바구니 업데이트
             if (selectMenuFrame instanceof SelectMenuFrame) {
@@ -60,9 +60,9 @@ public class SwingControllerImpl implements SwingController {
 
     // selectMenuFrame -> startFrame
     @Override
-    public void moveStartFrame(JFrame currentFrame) {
+    public void moveStartFrame(JFrame nowFrame) {
         if (startFrame != null) {
-            currentFrame.setVisible(false);
+            nowFrame.setVisible(false);
             startFrame.setVisible(true);
             System.out.println("시작 화면으로 복귀");
         }
@@ -70,7 +70,7 @@ public class SwingControllerImpl implements SwingController {
 
     // selectMenuFrame -> selectOptionNewTabFrame (새 창 생성)
     @Override
-    public void openSelectOptionNewTab(JFrame currentFrame, MenuItem menuItem) {
+    public void openSelectOptionNewTab(JFrame nowFrame, MenuItem menuItem) {
         if (selectOptionNewTabFrame != null) {
             selectOptionNewTabFrame.setMenuItem(menuItem);
             selectOptionNewTabFrame.setVisible(true);
@@ -80,13 +80,13 @@ public class SwingControllerImpl implements SwingController {
 
     // selectMenuFrame -> shoppingCartFrame
     @Override
-    public void moveShoppingCart(JFrame currentFrame) {
+    public void moveShoppingCart(JFrame nowFrame) {
         if (shoppingCartFrame != null) {
             // 장바구니 업데이트
             if (shoppingCartFrame instanceof ShoppingCartFrame) {
                 ((ShoppingCartFrame) shoppingCartFrame).updateOrderItems();
             }
-            currentFrame.setVisible(false);
+            nowFrame.setVisible(false);
             shoppingCartFrame.setVisible(true);
             System.out.println("장바구니 화면으로 이동");
         }
@@ -94,13 +94,13 @@ public class SwingControllerImpl implements SwingController {
 
     // selectMenuFrame -> OrderFrame
     @Override
-    public void moveOrder(JFrame currentFrame) {
+    public void moveOrder(JFrame nowFrame) {
         if (orderFrame != null) {
             // 주문 화면 업데이트
             if (orderFrame instanceof OrderFrame) {
                 ((OrderFrame) orderFrame).updateOrderItems();
             }
-            currentFrame.setVisible(false);
+            nowFrame.setVisible(false);
             orderFrame.setVisible(true);
             System.out.println("주문 화면으로 이동");
         }
@@ -145,7 +145,7 @@ public class SwingControllerImpl implements SwingController {
 
     // OrderFrame -> receiptNewTabFrame (새 창 생성)
     @Override
-    public void openReceipt(JFrame currentFrame) {
+    public void openReceipt(JFrame nowFrame) {
         if (receiptFrame != null) {
             receiptFrame.setVisible(true);
             System.out.println("영수증 새 창 열기");
