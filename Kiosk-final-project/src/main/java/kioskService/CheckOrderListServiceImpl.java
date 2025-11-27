@@ -14,23 +14,37 @@ public class CheckOrderListServiceImpl implements CheckOrderListService {
 
     @Override
     public List<OrderItem> getOrderItemsByUserInfo(int tableNumber, String name) {
-        Order order = orderInfoRespositoryImpl.getOrderByUserInfo(tableNumber, name);
+        List<Order> orders = orderInfoRespositoryImpl.getOrdersByUserInfo(tableNumber, name);
 
-        if (order != null) {
-            return order.getOrderItems();
+        if (orders == null || orders.isEmpty()) {
+            return null;
         }
 
-        return null;
+        // 모든 주문의 항목을 합치기
+        List<OrderItem> allOrderItems = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getOrderItems() != null) {
+                allOrderItems.addAll(order.getOrderItems());
+            }
+        }
+
+        return allOrderItems.isEmpty() ? null : allOrderItems;
     }
 
     @Override
     public int gettotalPriceByUserInfo(int tableNumber, String name) {
-        Order order = orderInfoRespositoryImpl.getOrderByUserInfo(tableNumber, name);
+        List<Order> orders = orderInfoRespositoryImpl.getOrdersByUserInfo(tableNumber, name);
 
-        if (order != null) {
-            return order.getTotalPrice();
+        if (orders == null || orders.isEmpty()) {
+            return -1;
         }
 
-        return -1;
+        // 모든 주문의 총액 합산
+        int totalPrice = 0;
+        for (Order order : orders) {
+            totalPrice += order.getTotalPrice();
+        }
+
+        return totalPrice;
     }
 }

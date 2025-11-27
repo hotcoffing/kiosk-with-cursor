@@ -10,5 +10,7 @@ public interface OrderInfoRepository {
 
     Order getOrderById(Long id);
     Order getOrderByUserInfo(int tableNumber, String name);
+    List<Order> getOrdersByUserInfo(int tableNumber, String name);
     List<Order> getAllOrder();
+    Long getMaxOrderId();
 }

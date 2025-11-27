@@ -1,12 +1,15 @@
 package Domain;
 
+import java.io.Serializable;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
 
 import static Domain.OrderState.*;
 
-public class Order extends IdCounter {
+public class Order extends IdCounter implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Long id;
     private int tableNumber;
 
@@ -19,13 +22,17 @@ public class Order extends IdCounter {
     private int totalPrice;
 
     public Order() {
-        this.id = orderIdCounter.getAndIncrement();
+        this(orderIdCounter.getAndIncrement());
+    }
 
-        // 기본 초기 상태 설정 (주문 전 변경)
+    public Order(Long id) {
+        this.id = id;
+        initializeDefaults();
+    }
+
+    private void initializeDefaults() {
         this.tableNumber = 0;
         this.orderType = null;
-        
-        // 기본 초기 상태 설정 (주문 후 설정)
         this.orderState = CANCELED;
         this.orderTime = null;
         this.orderItems = null;
@@ -76,6 +83,10 @@ public class Order extends IdCounter {
 
     public void setOrderTime() {
         this.orderTime = LocalDateTime.now();
+    }
+
+    public void setOrderTime(LocalDateTime orderTime) {
+        this.orderTime = orderTime;
     }
 
     public OrderState getOrderState() {

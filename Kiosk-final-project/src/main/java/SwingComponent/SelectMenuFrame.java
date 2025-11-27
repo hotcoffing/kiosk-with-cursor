@@ -1,6 +1,5 @@
 package SwingComponent;
 
-import Config.ShoppingCartConfig;
 import Domain.*;
 import Domain.MenuItem;
 import Static.*;
@@ -10,14 +9,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 
 public class SelectMenuFrame extends JFrame {
     // config 연결을 위한 기능 필드
     private final SwingGraphic swingGraphic;
-    private final SwingAction swingAction;
     private final SwingController swingController;
-    private final ShoppingCartConfig shoppingCartConfig;
     private SelectMenuService selectMenuService;
     private ShoppingCartService shoppingCartService;
     private Repository.ShoppingCartRepository shoppingCartRepository;
@@ -32,10 +30,6 @@ public class SelectMenuFrame extends JFrame {
     Font totalFont = new Font(Font.DIALOG, Font.BOLD, 24);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),
@@ -54,25 +48,18 @@ public class SelectMenuFrame extends JFrame {
     
     // 현재 선택된 카테고리
     private String selectedCategory = "치킨";
-    private Order nowOrder;
-    private int nowTotal = 0;
+    private Order currentOrder;
+    private int currentTotal = 0;
 
     // SelectMenuFrame 생성자
-    public SelectMenuFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController, ShoppingCartConfig shoppingCartConfig) {
-        // swingGraphic, swingAction, swingController 객체 config 활용
+    public SelectMenuFrame(SwingGraphic swingGraphic, SwingController swingController) {
+        // swingGraphic, swingController 객체 config 활용
         this.swingGraphic = swingGraphic;
-        this.swingAction = swingAction;
         this.swingController = swingController;
-        this.shoppingCartConfig = shoppingCartConfig;
-        
-        // ShoppingCartConfig를 통해 서비스와 레포지토리 초기화
-        this.selectMenuService = shoppingCartConfig.selectMenuService();
-        this.shoppingCartService = shoppingCartConfig.shoppingCartService();
-        this.shoppingCartRepository = shoppingCartConfig.shoppingCartRepository();
         
         // Order 객체 초기화
-        nowOrder = new Order();
-        nowOrder.setOrderState(OrderState.CHOOSE_ORDER);
+        currentOrder = new Order();
+        currentOrder.setOrderState(OrderState.CHOOSE_ORDER);
 
         // 메인 콘텐츠펜 판넬 생성
         this.contentPane = new JPanel();
@@ -87,8 +74,17 @@ public class SelectMenuFrame extends JFrame {
         setContentPane(contentPane);
     }
 
+    public void setServices(SelectMenuService selectMenuService, ShoppingCartService shoppingCartService) {
+        this.selectMenuService = selectMenuService;
+        this.shoppingCartService = shoppingCartService;
+    }
+
+    public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {
+        this.shoppingCartRepository = shoppingCartRepository;
+    }
+
     public void setOrder(Order order) {
-        this.nowOrder = order;
+        this.currentOrder = order;
         updateTotal();
     }
 
@@ -104,7 +100,7 @@ public class SelectMenuFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                nowOrder.setTableNumber(Integer.parseInt(tableNum));
+                currentOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -143,7 +139,7 @@ public class SelectMenuFrame extends JFrame {
 
         shoppingCartButton.addActionListener(e -> {
             if (selectMenuService != null) {
-                selectMenuService.goShoppingCart(nowOrder);
+                selectMenuService.goShoppingCart(currentOrder);
             }
             swingController.moveShoppingCart(this);
         });
@@ -163,7 +159,7 @@ public class SelectMenuFrame extends JFrame {
             }
             
             if (selectMenuService != null) {
-                selectMenuService.goOrder(nowOrder);
+                selectMenuService.goOrder(currentOrder);
             }
             swingController.moveOrder(this);
         });
@@ -260,9 +256,9 @@ public class SelectMenuFrame extends JFrame {
         // 장바구니의 총 금액 계산
         if (shoppingCartService instanceof kioskService.CalcMoneyInterface) {
             kioskService.CalcMoneyInterface calcMoney = (kioskService.CalcMoneyInterface) shoppingCartService;
-            nowTotal = calcMoney.getTotalPriceUseShoppingCart();
+            currentTotal = calcMoney.getTotalPriceUseShoppingCart();
         }
-        totalLabel.setText("총계: " + nowTotal + "원");
+        totalLabel.setText("총계: " + currentTotal + "원");
     }
 
     // 컨텐츠펜 판넬에 추가

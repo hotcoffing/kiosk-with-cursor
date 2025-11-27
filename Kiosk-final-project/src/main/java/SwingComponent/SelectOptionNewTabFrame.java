@@ -1,43 +1,21 @@
 package SwingComponent;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Config.ShoppingCartConfig;
-import Domain.Category;
+import Domain.*;
 import Domain.MenuItem;
-import Domain.Option;
-import Domain.OptionType;
-import Domain.Order;
-import Domain.OrderItem;
 import Static.OptionStatic;
 import kioskService.SelectOptionService;
-import kioskService.ShoppingCartService;
 
 public class SelectOptionNewTabFrame extends JFrame {
     private final SwingGraphic swingGraphic;
-    private final SwingAction swingAction;
     private final SwingController swingController;
-    private final ShoppingCartConfig shoppingCartConfig;
     private SelectOptionService selectOptionService;
-    private ShoppingCartService shoppingCartService;
     private Repository.ShoppingCartRepository shoppingCartRepository;
 
     // 컨텐츠펜 선언
@@ -50,10 +28,6 @@ public class SelectOptionNewTabFrame extends JFrame {
     Font priceFont = new Font(Font.DIALOG, Font.BOLD, 20);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),
@@ -69,22 +43,15 @@ public class SelectOptionNewTabFrame extends JFrame {
     JButton addToCartButton;
 
     // 현재 선택된 메뉴 아이템
-    private MenuItem nowMenuItem;
-    private Order nowOrder;
+    private MenuItem currentMenuItem;
+    private Order currentOrder;
     private List<JCheckBox> singleOptionCheckBoxes = new ArrayList<>();
     private List<JCheckBox> multipleOptionCheckBoxes = new ArrayList<>();
     private Option selectedSingleOption = OptionStatic.getNormal(); // 기본값
 
-    public SelectOptionNewTabFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController, ShoppingCartConfig shoppingCartConfig) {
+    public SelectOptionNewTabFrame(SwingGraphic swingGraphic, SwingController swingController) {
         this.swingGraphic = swingGraphic;
-        this.swingAction = swingAction;
         this.swingController = swingController;
-        this.shoppingCartConfig = shoppingCartConfig;
-        
-        // ShoppingCartConfig를 통해 서비스와 레포지토리 초기화
-        this.selectOptionService = shoppingCartConfig.selectOptionService();
-        this.shoppingCartService = shoppingCartConfig.shoppingCartService();
-        this.shoppingCartRepository = shoppingCartConfig.shoppingCartRepository();
 
         // 메인 콘텐츠펜 판넬 생성
         this.contentPane = new JPanel();
@@ -95,12 +62,20 @@ public class SelectOptionNewTabFrame extends JFrame {
         // SelectOptionNewTabFrame 기본 프레임 설정
         setTitle("옵션 선택");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(900, 0, 600, 700);
+        setBounds(250, 100, 600, 700);
         setContentPane(contentPane);
     }
 
+    public void setServices(SelectOptionService selectOptionService) {
+        this.selectOptionService = selectOptionService;
+    }
+
+    public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {
+        this.shoppingCartRepository = shoppingCartRepository;
+    }
+
     public void setMenuItem(MenuItem menuItem) {
-        this.nowMenuItem = menuItem;
+        this.currentMenuItem = menuItem;
         // 옵션 상태 초기화 (이전 메뉴의 옵션이 남지 않도록)
         selectedSingleOption = OptionStatic.getNormal();
         singleOptionCheckBoxes.clear();
@@ -109,7 +84,7 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     public void setOrder(Order order) {
-        this.nowOrder = order;
+        this.currentOrder = order;
     }
 
     private void initSelectOptionNewTabFrame() {
@@ -152,12 +127,12 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void updateMenuDisplay() {
-        if (nowMenuItem == null) return;
+        if (currentMenuItem == null) return;
 
-        menuNameLabel.setText(nowMenuItem.getName());
+        menuNameLabel.setText(currentMenuItem.getName());
         
         // 옵션 체크박스 생성 (치킨 메뉴인 경우)
-        if (nowMenuItem.getCategory() == Category.CHICKEN) {
+        if (currentMenuItem.getCategory() == Category.CHICKEN) {
             createChickenOptions();
         } else {
             // 다른 메뉴는 옵션 없음
@@ -232,9 +207,9 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void updatePrice() {
-        if (nowMenuItem == null) return;
+        if (currentMenuItem == null) return;
 
-        int totalPrice = nowMenuItem.getOriginalPrice();
+        int totalPrice = currentMenuItem.getOriginalPrice();
         
         // 단일 옵션 가격 추가
         if (selectedSingleOption != null) {
@@ -268,13 +243,13 @@ public class SelectOptionNewTabFrame extends JFrame {
     }
 
     private void addToShoppingCart() {
-        if (nowMenuItem == null || nowOrder == null) return;
+        if (currentMenuItem == null || currentOrder == null) return;
 
         // OrderItem 생성
-        OrderItem orderItem = new OrderItem(nowMenuItem);
+        OrderItem orderItem = new OrderItem(currentMenuItem);
 
         // 옵션이 있는 메뉴(치킨)인 경우에만 옵션 설정
-        if (nowMenuItem.getCategory() == Category.CHICKEN) {
+        if (currentMenuItem.getCategory() == Category.CHICKEN) {
             // 옵션 설정
             List<Option> multipleOptions = new ArrayList<>();
             for (JCheckBox checkBox : multipleOptionCheckBoxes) {
@@ -306,7 +281,7 @@ public class SelectOptionNewTabFrame extends JFrame {
 
         // 메뉴 선택 화면으로 돌아가기
         if (selectOptionService != null) {
-            selectOptionService.goMenu(nowOrder);
+            selectOptionService.goMenu(currentOrder);
         }
         
         // 옵션 선택 화면 닫기

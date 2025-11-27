@@ -1,10 +1,13 @@
 package Domain;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static Domain.OrderState.*;
 
-public class OrderItem extends IdCounter {
+public class OrderItem extends IdCounter implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Long id;
     private String menuName;
     private int price;
@@ -14,12 +17,18 @@ public class OrderItem extends IdCounter {
 
     private Option singleOption;
     private List<Option> multipleOptions = new ArrayList<>();
+    private int cachedPriceWithOptions;
+    private String optionSummary;
 
     public OrderItem(MenuItem menuItem) {
-        this.id = orderItemIdCounter.getAndIncrement();
-        this.menuName = menuItem.getName();
-        this.price = menuItem.getOriginalPrice();
-        this.quantity = 1;
+        this(orderItemIdCounter.getAndIncrement(), menuItem.getName(), menuItem.getOriginalPrice(), 1);
+    }
+
+    public OrderItem(Long id, String menuName, int price, int quantity) {
+        this.id = id;
+        this.menuName = menuName;
+        this.price = price;
+        this.quantity = quantity;
         this.orderState = CHOOSE_ORDER;
     }
 
@@ -31,6 +40,7 @@ public class OrderItem extends IdCounter {
 
         this.singleOption = (singleOption);
         this.multipleOptions.addAll(multipleOption);
+        this.optionSummary = null;
     }
 
     // 옵션을 포함한 하나의 음식 가격 계산
@@ -39,6 +49,9 @@ public class OrderItem extends IdCounter {
         int multipleOptionPrice = 0;
 
         if (singleOption == null) {
+            if (cachedPriceWithOptions > 0) {
+                return cachedPriceWithOptions;
+            }
             throw new IllegalArgumentException("single option can't be null or empty");
         }
         else {
@@ -51,7 +64,8 @@ public class OrderItem extends IdCounter {
             }
         }
 
-        return price + singleOptionPrice + multipleOptionPrice;
+        cachedPriceWithOptions = price + singleOptionPrice + multipleOptionPrice;
+        return cachedPriceWithOptions;
     }
 
     // Getter
@@ -100,8 +114,20 @@ public class OrderItem extends IdCounter {
         return multipleOptions;
     }
 
+    public void setOptionSummary(String optionSummary) {
+        this.optionSummary = optionSummary;
+    }
+
+    public void setCachedPriceWithOptions(int cachedPriceWithOptions) {
+        this.cachedPriceWithOptions = cachedPriceWithOptions;
+    }
+
     // 옵션 정보를 문자열로 반환 (단일 옵션과 다중 옵션 분리)
     public String getOptionsString() {
+        if (singleOption == null && optionSummary != null) {
+            return optionSummary;
+        }
+
         StringBuilder optionsStr = new StringBuilder();
         
         // 단일 옵션
@@ -123,7 +149,8 @@ public class OrderItem extends IdCounter {
             }
         }
         
-        return optionsStr.toString();
+        optionSummary = optionsStr.toString();
+        return optionSummary;
     }
 
     // 같은 메뉴와 옵션인지 비교하는 메서드
