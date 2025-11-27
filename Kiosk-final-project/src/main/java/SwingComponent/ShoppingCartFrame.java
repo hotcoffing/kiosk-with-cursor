@@ -25,10 +25,6 @@ public class ShoppingCartFrame extends JFrame {
     Font totalFont = new Font(Font.DIALOG, Font.BOLD, 24);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),

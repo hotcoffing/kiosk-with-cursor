@@ -1,6 +1,8 @@
 package SwingComponent;
 
 import Config.SwingConfig;
+import Config.AppConfig;
+import Domain.IdCounter;
 
 public class Runner {
     SwingConfig swingConfig;
@@ -8,6 +10,14 @@ public class Runner {
     public Runner() {
         // Config 초기화
         swingConfig = new SwingConfig();
+        
+        // 앱 실행 시 ID 동기화
+        try {
+            AppConfig appConfig = new AppConfig();
+            IdCounter.syncOrderIdFromDatabase(appConfig.dataSource());
+        } catch (Exception e) {
+            System.err.println("Failed to initialize ID counter: " + e.getMessage());
+        }
 
         // 모든 프레임 생성
         StartFrame startFrame = swingConfig.startFrame();
@@ -29,7 +39,8 @@ public class Runner {
                 selectOptionNewTabFrame,
                 shoppingCartFrame,
                 orderFrame,
-                receiptFrame
+                receiptFrame,
+                swingConfig
         );
     }
 

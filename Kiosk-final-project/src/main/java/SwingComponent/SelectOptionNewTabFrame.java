@@ -1,41 +1,21 @@
 package SwingComponent;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Domain.Category;
+import Domain.*;
 import Domain.MenuItem;
-import Domain.Option;
-import Domain.OptionType;
-import Domain.Order;
-import Domain.OrderItem;
 import Static.OptionStatic;
 import kioskService.SelectOptionService;
-import kioskService.ShoppingCartService;
 
 public class SelectOptionNewTabFrame extends JFrame {
     private final SwingGraphic swingGraphic;
-    private final SwingAction swingAction;
     private final SwingController swingController;
     private SelectOptionService selectOptionService;
-    private ShoppingCartService shoppingCartService;
     private Repository.ShoppingCartRepository shoppingCartRepository;
 
     // 컨텐츠펜 선언
@@ -48,10 +28,6 @@ public class SelectOptionNewTabFrame extends JFrame {
     Font priceFont = new Font(Font.DIALOG, Font.BOLD, 20);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),
@@ -73,9 +49,8 @@ public class SelectOptionNewTabFrame extends JFrame {
     private List<JCheckBox> multipleOptionCheckBoxes = new ArrayList<>();
     private Option selectedSingleOption = OptionStatic.getNormal(); // 기본값
 
-    public SelectOptionNewTabFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController) {
+    public SelectOptionNewTabFrame(SwingGraphic swingGraphic, SwingController swingController) {
         this.swingGraphic = swingGraphic;
-        this.swingAction = swingAction;
         this.swingController = swingController;
 
         // 메인 콘텐츠펜 판넬 생성
@@ -87,13 +62,12 @@ public class SelectOptionNewTabFrame extends JFrame {
         // SelectOptionNewTabFrame 기본 프레임 설정
         setTitle("옵션 선택");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds(900, 0, 600, 700);
+        setBounds(250, 100, 600, 700);
         setContentPane(contentPane);
     }
 
-    public void setServices(SelectOptionService selectOptionService, ShoppingCartService shoppingCartService) {
+    public void setServices(SelectOptionService selectOptionService) {
         this.selectOptionService = selectOptionService;
-        this.shoppingCartService = shoppingCartService;
     }
 
     public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {

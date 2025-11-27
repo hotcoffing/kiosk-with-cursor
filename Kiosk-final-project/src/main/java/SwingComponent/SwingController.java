@@ -33,5 +33,5 @@ public interface SwingController {
     void moveOrderFromCart(JFrame currentFrame);*/
 
     // For Order -> Receipt (새 창)
-    void openReceipt(JFrame currentFrame);
+    void openReceipt(JFrame currentFrame, Long orderId);
 }

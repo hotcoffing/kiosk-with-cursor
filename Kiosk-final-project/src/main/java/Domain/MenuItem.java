@@ -48,31 +48,15 @@ public class MenuItem {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(int originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
     public String getImagePath() {
         return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 }

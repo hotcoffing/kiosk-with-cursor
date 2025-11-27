@@ -9,9 +9,9 @@ public class SwingConfig {
 
     // config 필드
     private SwingGraphic swingGraphic;
-    private SwingAction swingAction;
     private SwingController swingController;
     private ShoppingCartConfig shoppingCartConfig;
+    private OrderInfoConfig orderInfoConfig;
     
     // Frame 필드
     private StartFrame startFrame;
@@ -21,6 +21,9 @@ public class SwingConfig {
     private ShoppingCartFrame shoppingCartFrame;
     private OrderFrame orderFrame;
     private ReceiptNewTabFrame receiptNewTabFrame;
+    private CheckOrderListService checkOrderListService;
+    private PrintReceiptService printReceiptService;
+    private PaymentService paymentService;
 
     // Order 객체 (전역 관리)
     private Order currentOrder;
@@ -29,11 +32,6 @@ public class SwingConfig {
     public SwingGraphic swingGraphic() {
         if (swingGraphic == null) swingGraphic = new SwingGraphicImpl();
         return swingGraphic;
-    }
-
-    public SwingAction swingAction() {
-        if (swingAction == null) swingAction = new SwingActionImpl();
-        return swingAction;
     }
 
     public SwingController swingController() {
@@ -46,16 +44,51 @@ public class SwingConfig {
         return shoppingCartConfig;
     }
 
+    public OrderInfoConfig orderInfoConfig() {
+        if (orderInfoConfig == null) orderInfoConfig = new OrderInfoConfig();
+        return orderInfoConfig;
+    }
+
     // Repository 인스턴스 접근 메서드 추가
     public ShoppingCartRepository shoppingCartRepository() {
         return shoppingCartConfig().shoppingCartRepository();
     }
 
+    public OrderInfoRespositoryImpl orderInfoRepository() {
+        return orderInfoConfig().orderInfoRepository();
+    }
+
+    public CheckOrderListService checkOrderListService() {
+        if (checkOrderListService == null) {
+            checkOrderListService = orderInfoConfig().checkOrderListService();
+        }
+        return checkOrderListService;
+    }
+
+    public PrintReceiptService printReceiptService() {
+        if (printReceiptService == null) {
+            printReceiptService = orderInfoConfig().printReceiptService();
+        }
+        return printReceiptService;
+    }
+
+    public PaymentService paymentService() {
+        if (paymentService == null) {
+            paymentService = new PaymentServiceImpl(orderInfoRepository());
+        }
+        return paymentService;
+    }
+
     public Order getCurrentOrder() {
         if (currentOrder == null) {
             currentOrder = new Order();
+            currentOrder.setOrderState(OrderState.ORDERING);
         }
         return currentOrder;
+    }
+    
+    public void setCurrentOrder(Order order) {
+        this.currentOrder = order;
     }
 
     // Frame 공유 연결
@@ -66,7 +99,7 @@ public class SwingConfig {
 
     public SelectMenuFrame selectMenuFrame() {
         if (selectMenuFrame == null) {
-            selectMenuFrame = new SelectMenuFrame(swingGraphic(), swingAction(), swingController());
+            selectMenuFrame = new SelectMenuFrame(swingGraphic(), swingController());
             // 서비스 주입
             selectMenuFrame.setServices(
                     shoppingCartConfig().selectMenuService(),
@@ -81,17 +114,20 @@ public class SwingConfig {
     }
 
     public CheckOrderListNewTabFrame checkOrderListNewTabFrame() {
-        if (checkOrderListNewTabFrame == null) checkOrderListNewTabFrame = new CheckOrderListNewTabFrame(swingGraphic(), swingAction());
+        if (checkOrderListNewTabFrame == null) {
+            checkOrderListNewTabFrame = new CheckOrderListNewTabFrame(
+                    checkOrderListService()
+            );
+        }
         return checkOrderListNewTabFrame;
     }
 
     public SelectOptionNewTabFrame selectOptionNewTabFrame() {
         if (selectOptionNewTabFrame == null) {
-            selectOptionNewTabFrame = new SelectOptionNewTabFrame(swingGraphic(), swingAction(), swingController());
+            selectOptionNewTabFrame = new SelectOptionNewTabFrame(swingGraphic(), swingController());
             // 서비스 주입
             selectOptionNewTabFrame.setServices(
-                    shoppingCartConfig().selectOptionService(),
-                    shoppingCartConfig().shoppingCartService()
+                    shoppingCartConfig().selectOptionService()
             );
             // Repository 주입
             selectOptionNewTabFrame.setShoppingCartRepository(shoppingCartRepository());
@@ -116,11 +152,11 @@ public class SwingConfig {
 
     public OrderFrame orderFrame() {
         if (orderFrame == null) {
-            orderFrame = new OrderFrame(swingGraphic(), swingAction(), swingController());
+            orderFrame = new OrderFrame(swingGraphic(), swingController());
             // 서비스 주입
             orderFrame.setServices(
                     shoppingCartConfig().orderService(),
-                    new PaymentServiceImpl()
+                    paymentService()
             );
             // Repository 주입
             orderFrame.setShoppingCartRepository(shoppingCartRepository());
@@ -131,7 +167,14 @@ public class SwingConfig {
     }
 
     public ReceiptNewTabFrame receiptNewTabFrame() {
-        if (receiptNewTabFrame == null) receiptNewTabFrame = new ReceiptNewTabFrame(swingGraphic());
+        if (receiptNewTabFrame == null) {
+            receiptNewTabFrame = new ReceiptNewTabFrame(swingGraphic(), printReceiptService());
+        }
         return receiptNewTabFrame;
+    }
+
+    // 매번 새로운 ReceiptNewTabFrame 생성 (주문마다 새 창 띄우기)
+    public ReceiptNewTabFrame createNewReceiptFrame() {
+        return new ReceiptNewTabFrame(swingGraphic(), printReceiptService());
     }
 }

@@ -36,6 +36,7 @@ public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
         order.setOrderTime();
         order.setOrderItems(shoppingCartRepository.getAllOrderItems());
         order.setTotalPrice(getTotalPriceUseShoppingCart());
+        order.setOrderState(OrderState.ORDERED);
         
         // 주문 상태 갱신
         for (OrderItem orderItem : shoppingCartRepository.getAllOrderItems()) {
@@ -45,6 +46,15 @@ public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
         // 장바구니 초기화
         initOrderItemIdCounter();
         shoppingCartRepository.removeAllOrderItems();
+        
+        // 주문 완료 후 ID 카운터 +1 증가 (다음 주문을 위해)
+        long currentId = orderIdCounter.get();
+        orderIdCounter.set(currentId + 1);
+        
+        // 새로운 Order 객체 생성 (다음 주문을 위해)
+        // Order의 ID는 final이므로 새로 생성해야 함
+        // 하지만 여기서는 Order 객체를 생성하지 않고, 
+        // 다음에 Order가 생성될 때 증가된 ID를 사용하도록 함
     }
 
     @Override

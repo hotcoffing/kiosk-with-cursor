@@ -15,7 +15,6 @@ import java.util.List;
 public class SelectMenuFrame extends JFrame {
     // config 연결을 위한 기능 필드
     private final SwingGraphic swingGraphic;
-    private final SwingAction swingAction;
     private final SwingController swingController;
     private SelectMenuService selectMenuService;
     private ShoppingCartService shoppingCartService;
@@ -31,10 +30,6 @@ public class SelectMenuFrame extends JFrame {
     Font totalFont = new Font(Font.DIALOG, Font.BOLD, 24);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),
@@ -57,10 +52,9 @@ public class SelectMenuFrame extends JFrame {
     private int currentTotal = 0;
 
     // SelectMenuFrame 생성자
-    public SelectMenuFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController) {
-        // swingGraphic, swingAction, swingController 객체 config 활용
+    public SelectMenuFrame(SwingGraphic swingGraphic, SwingController swingController) {
+        // swingGraphic, swingController 객체 config 활용
         this.swingGraphic = swingGraphic;
-        this.swingAction = swingAction;
         this.swingController = swingController;
         
         // Order 객체 초기화

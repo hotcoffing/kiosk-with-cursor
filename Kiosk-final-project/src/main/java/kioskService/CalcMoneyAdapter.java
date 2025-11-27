@@ -9,13 +9,6 @@ public class CalcMoneyAdapter implements CalcMoneyInterface {
 
     protected final ShoppingCartRepository shoppingCartRepository;
 
-    // 에러 발생시 강제 종료
-    public CalcMoneyAdapter() {
-        shoppingCartRepository = null;
-        System.out.println("Error : there is no repository");
-        System.exit(0);
-    }
-
     public CalcMoneyAdapter(ShoppingCartRepository shoppingCartRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
     }
@@ -37,6 +30,7 @@ public class CalcMoneyAdapter implements CalcMoneyInterface {
 
     @Override
     public int getLocalPriceInOption(MenuItem item, List<Option> options) {
+        // 항상 0을 반환하지만 인터페이스 구현을 위해 필요
         return 0;
     }
 }

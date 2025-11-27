@@ -17,10 +17,6 @@ java {
 }
 
 dependencies {
-    // JDBC 템플릿 의존성
-    implementation 'org.springframework:spring-core:6.1.1'
-    implementation 'org.springframework:spring-jdbc:6.1.1'
-
     // MySQL 드라이버
     implementation 'mysql:mysql-connector-java:8.0.33'
 

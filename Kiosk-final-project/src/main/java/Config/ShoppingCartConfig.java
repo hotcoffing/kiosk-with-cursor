@@ -2,16 +2,7 @@ package Config;
 
 import Repository.ShoppingCartRepository;
 import Repository.ShoppingCartRepositoryImpl;
-import kioskService.CalcMoneyAdapter;
-import kioskService.CalcMoneyInterface;
-import kioskService.OrderService;
-import kioskService.OrderServiceImpl;
-import kioskService.SelectMenuService;
-import kioskService.SelectMenuServiceImpl;
-import kioskService.SelectOptionService;
-import kioskService.SelectOptionServiceImpl;
-import kioskService.ShoppingCartService;
-import kioskService.ShoppingCartServiceImpl;
+import kioskService.*;
 
 public class ShoppingCartConfig {
 

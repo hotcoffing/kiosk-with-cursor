@@ -1,5 +1,6 @@
 package SwingComponent;
 
+import Config.SwingConfig;
 import Domain.*;
 import javax.swing.*;
 
@@ -13,6 +14,7 @@ public class SwingControllerImpl implements SwingController {
     private ShoppingCartFrame shoppingCartFrame;
     private OrderFrame orderFrame;
     private ReceiptNewTabFrame receiptFrame;
+    private SwingConfig swingConfig;
 
     public SwingControllerImpl() {
         // 생성자는 비워둠 (Config에서 생성 시점에는 프레임이 없으므로)
@@ -25,7 +27,8 @@ public class SwingControllerImpl implements SwingController {
                           SelectOptionNewTabFrame selectOptionNewTabFrame,
                           ShoppingCartFrame shoppingCartFrame,
                           OrderFrame orderFrame,
-                          ReceiptNewTabFrame receiptFrame) {
+                          ReceiptNewTabFrame receiptFrame,
+                          SwingConfig swingConfig) {
         this.startFrame = startFrame;
         this.selectMenuFrame = selectMenuFrame;
         this.checkOrderListFrame = checkOrderListFrame;
@@ -33,6 +36,7 @@ public class SwingControllerImpl implements SwingController {
         this.shoppingCartFrame = shoppingCartFrame;
         this.orderFrame = orderFrame;
         this.receiptFrame = receiptFrame;
+        this.swingConfig = swingConfig;
     }
 
     // startFrame -> checkOrderListNewTabFrame (새 창 생성)
@@ -145,10 +149,14 @@ public class SwingControllerImpl implements SwingController {
 
     // OrderFrame -> receiptNewTabFrame (새 창 생성)
     @Override
-    public void openReceipt(JFrame currentFrame) {
-        if (receiptFrame != null) {
-            receiptFrame.setVisible(true);
-            System.out.println("영수증 새 창 열기");
+    public void openReceipt(JFrame currentFrame, Long orderId) {
+        // 매번 새로운 ReceiptNewTabFrame 생성 (주문마다 새 창 띄우기)
+        if (swingConfig != null) {
+            ReceiptNewTabFrame newReceiptFrame = swingConfig.createNewReceiptFrame();
+            if (newReceiptFrame != null) {
+                newReceiptFrame.displayReceipt(orderId);
+                System.out.println("영수증 새 창 열기 (Order ID: " + orderId + ")");
+            }
         }
     }
 }

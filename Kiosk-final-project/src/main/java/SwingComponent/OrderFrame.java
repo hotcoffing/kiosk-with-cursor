@@ -1,37 +1,17 @@
 package SwingComponent;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Domain.Order;
-import Domain.OrderItem;
-import Domain.OrderState;
-import Domain.OrderType;
-import Domain.PaymentType;
+import Domain.*;
 import kioskService.OrderService;
 import kioskService.PaymentService;
 
 public class OrderFrame extends JFrame {
     private final SwingGraphic swingGraphic;
-    private final SwingAction swingAction;
     private final SwingController swingController;
     private OrderService orderService;
     private PaymentService paymentService;
@@ -48,10 +28,6 @@ public class OrderFrame extends JFrame {
     Font paymentButtonFont = new Font(Font.DIALOG, Font.BOLD, 20);
 
     // 컬러 리스트 { ForeGround, Border, BackGround }
-    Color[] labelColorList = new Color[]{
-            new Color(0, 0, 0),
-            new Color(200, 200, 200)
-    };
     Color[] buttonColorList = new Color[]{
             new Color(0, 0, 0),
             new Color(100, 100, 100),
@@ -71,9 +47,8 @@ public class OrderFrame extends JFrame {
     private Order currentOrder;
     private PaymentType selectedPaymentType;
 
-    public OrderFrame(SwingGraphic swingGraphic, SwingAction swingAction, SwingController swingController) {
+    public OrderFrame(SwingGraphic swingGraphic, SwingController swingController) {
         this.swingGraphic = swingGraphic;
-        this.swingAction = swingAction;
         this.swingController = swingController;
 
         // 메인 콘텐츠펜 판넬 생성
@@ -82,6 +57,7 @@ public class OrderFrame extends JFrame {
         // Order 객체 초기화
         currentOrder = new Order();
         currentOrder.setOrderState(OrderState.ORDERING);
+        currentOrder.setTableNumber(1); // 기본값 TB 1
 
         // 컴포넌트 초기화
         initOrderFrame();
@@ -118,6 +94,7 @@ public class OrderFrame extends JFrame {
 
         String[] tableNumbers = {"TB 1", "TB 2", "TB 3", "TB 4", "TB 5", "TB 6", "TB 7", "TB 8"};
         tableNumberComboBox = new JComboBox<>(tableNumbers);
+        tableNumberComboBox.setSelectedItem("TB 1"); // 기본값 설정
         tableNumberComboBox.setFont(labelFont);
         tableNumberComboBox.addActionListener(e -> {
             String selected = (String) tableNumberComboBox.getSelectedItem();
@@ -283,6 +260,11 @@ public class OrderFrame extends JFrame {
     private void processPayment() {
         if (currentOrder == null || selectedPaymentType == null) return;
 
+        // Order 상태 확인 및 재설정 (ORDERING 상태가 아니면 재설정)
+        if (currentOrder.getOrderState() != OrderState.ORDERING) {
+            currentOrder.setOrderState(OrderState.ORDERING);
+        }
+
         // 장바구니가 비어있는지 확인
         if (shoppingCartRepository != null) {
             List<OrderItem> orderItems = shoppingCartRepository.getAllOrderItems();
@@ -298,21 +280,41 @@ public class OrderFrame extends JFrame {
 
         // 고객 이름 입력 받기
         String customerName = JOptionPane.showInputDialog(this, "고객 이름을 입력하세요:", "고객 정보", JOptionPane.PLAIN_MESSAGE);
-        
-        if (customerName == null || customerName.trim().isEmpty()) {
+
+        if (customerName == null) {
+            return;
+        }
+
+        customerName = customerName.trim();
+        if (customerName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "고객 이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         // 주문 완료 처리
         if (orderService != null) {
-            orderService.completeOrder(currentOrder, selectedPaymentType, customerName.trim());
+            orderService.completeOrder(currentOrder, selectedPaymentType, customerName);
+
+            // 저장된 주문 ID 가져오기 (addOrder에서 업데이트된 ID)
+            Long savedOrderId = null;
+            if (paymentService != null) {
+                savedOrderId = paymentService.saveOrder(currentOrder);
+            }
             
-            // 영수증 화면 열기
-            swingController.openReceipt(this);
+            // 저장 실패 시 현재 ID 사용
+            if (savedOrderId == null) {
+                savedOrderId = currentOrder.getId();
+            }
             
-            // 주문 화면 닫기
-            setVisible(false);
+            // 새로운 Order 객체 생성 (다음 주문을 위해)
+            // Order의 기본 생성자는 CANCELED 상태로 초기화하므로 ORDERING으로 변경 필요
+            currentOrder = new Order();
+            currentOrder.setOrderState(OrderState.ORDERING);
+            currentOrder.setTableNumber(1); // 기본값 TB 1
+            setOrder(currentOrder);
+
+            swingController.openReceipt(this, savedOrderId);
+            swingController.moveStartFrame(this);
         }
     }
 
