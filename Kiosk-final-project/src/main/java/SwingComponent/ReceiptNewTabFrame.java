@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+// 영수증 출력 프레임 클래스
+// 주문 완료 후 주문 내역, 총계, 주문 시간을 표시하는 영수증 새 창
 public class ReceiptNewTabFrame extends JFrame {
     private final PrintReceiptService printReceiptService;
 

@@ -10,6 +10,8 @@ import Domain.*;
 import kioskService.OrderService;
 import kioskService.PaymentService;
 
+// 주문/결제 프레임 클래스
+// 주문 내역 확인, 주문 유형 선택(매장/포장), 결제 수단 선택 및 주문 완료 처리 화면
 public class OrderFrame extends JFrame {
     private final SwingGraphic swingGraphic;
     private final SwingController swingController;
@@ -40,7 +42,9 @@ public class OrderFrame extends JFrame {
     JComboBox<String> tableNumberComboBox;
     JPanel orderItemsPanel;
     JLabel priceLabel;
-    JCheckBox takeoutCheckBox;
+    JRadioButton dineInRadioButton;
+    JRadioButton takeoutRadioButton;
+    ButtonGroup orderTypeButtonGroup;
     JPanel paymentButtonsPanel;
     JButton backButton;
 
@@ -58,6 +62,7 @@ public class OrderFrame extends JFrame {
         currentOrder = new Order();
         currentOrder.setOrderState(OrderState.ORDERING);
         currentOrder.setTableNumber(1); // 기본값 TB 1
+        currentOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
 
         // 컴포넌트 초기화
         initOrderFrame();
@@ -114,15 +119,22 @@ public class OrderFrame extends JFrame {
         priceLabel.setFont(priceFont);
         priceLabel.setForeground(Color.RED);
 
-        // 포장 옵션 체크박스
-        takeoutCheckBox = new JCheckBox("포장");
-        takeoutCheckBox.setFont(labelFont);
-        takeoutCheckBox.addActionListener(e -> {
-            if (takeoutCheckBox.isSelected()) {
-                currentOrder.setOrderType(OrderType.TAKE_OUT);
-            } else {
-                currentOrder.setOrderType(OrderType.DINE_IN);
-            }
+        // 포장/매장 선택 라디오 버튼
+        orderTypeButtonGroup = new ButtonGroup();
+        dineInRadioButton = new JRadioButton("매장", true); // 기본 선택
+        takeoutRadioButton = new JRadioButton("포장", false);
+        dineInRadioButton.setFont(labelFont);
+        takeoutRadioButton.setFont(labelFont);
+        
+        orderTypeButtonGroup.add(dineInRadioButton);
+        orderTypeButtonGroup.add(takeoutRadioButton);
+        
+        dineInRadioButton.addActionListener(e -> {
+            currentOrder.setOrderType(OrderType.DINE_IN);
+        });
+        
+        takeoutRadioButton.addActionListener(e -> {
+            currentOrder.setOrderType(OrderType.TAKE_OUT);
         });
 
         // 결제 방식 버튼 패널
@@ -311,7 +323,12 @@ public class OrderFrame extends JFrame {
             currentOrder = new Order();
             currentOrder.setOrderState(OrderState.ORDERING);
             currentOrder.setTableNumber(1); // 기본값 TB 1
+            currentOrder.setOrderType(OrderType.DINE_IN); // 기본값 매장
             setOrder(currentOrder);
+            
+            // 라디오 버튼 초기화
+            dineInRadioButton.setSelected(true);
+            takeoutRadioButton.setSelected(false);
 
             swingController.openReceipt(this, savedOrderId);
             swingController.moveStartFrame(this);
@@ -347,8 +364,19 @@ public class OrderFrame extends JFrame {
         JPanel pricePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pricePanel.setBackground(Color.WHITE);
         pricePanel.add(priceLabel);
-        pricePanel.add(takeoutCheckBox);
-        bottomPanel.add(pricePanel, BorderLayout.NORTH);
+        
+        // 주문 유형 선택 패널
+        JPanel orderTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        orderTypePanel.setBackground(Color.WHITE);
+        orderTypePanel.setBorder(BorderFactory.createTitledBorder("주문 유형"));
+        orderTypePanel.add(dineInRadioButton);
+        orderTypePanel.add(takeoutRadioButton);
+        
+        JPanel topBottomPanel = new JPanel(new BorderLayout(10, 10));
+        topBottomPanel.setBackground(Color.WHITE);
+        topBottomPanel.add(pricePanel, BorderLayout.WEST);
+        topBottomPanel.add(orderTypePanel, BorderLayout.EAST);
+        bottomPanel.add(topBottomPanel, BorderLayout.NORTH);
 
         // 결제 방식 패널
         bottomPanel.add(paymentButtonsPanel, BorderLayout.CENTER);

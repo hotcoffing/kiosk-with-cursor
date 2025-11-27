@@ -5,6 +5,8 @@ import Domain.OptionType;
 import static Domain.OptionType.MULTIPLE;
 import static Domain.OptionType.SINGLE;
 
+// 옵션 정적 데이터 클래스
+// 모든 메뉴 옵션(단일/복수 선택 옵션)을 정적으로 정의하고 제공
 public class OptionStatic {
     private static final Option normal = createOption("기본", 0, SINGLE);
     private static final Option boneless = createOption("순살", 2000, SINGLE);

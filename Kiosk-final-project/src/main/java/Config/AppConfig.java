@@ -1,9 +1,10 @@
 package Config;
 
-// MainApp.java 등 설정 파일
 import com.zaxxer.hikari.*;
 import javax.sql.*;
 
+// 애플리케이션 데이터베이스 연결 설정 클래스
+// HikariCP를 사용하여 MySQL 데이터베이스 연결 풀을 생성
 public class AppConfig {
 
     public DataSource dataSource() {

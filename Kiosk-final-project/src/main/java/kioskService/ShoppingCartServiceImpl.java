@@ -5,6 +5,8 @@ import Repository.*;
 
 import static Domain.OrderState.*;
 
+// 장바구니 서비스 구현 클래스
+// 장바구니 주문 항목 수량 조절 및 주문 상태 관리 기능을 구현
 public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements ShoppingCartService {
 
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {

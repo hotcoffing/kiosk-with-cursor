@@ -4,6 +4,8 @@ import Config.SwingConfig;
 import Domain.*;
 import javax.swing.*;
 
+// 프레임 간 이동 제어 구현 클래스
+// 각 프레임 간의 전환 및 새 창 열기 기능을 구현
 public class SwingControllerImpl implements SwingController {
 
     // 모든 프레임 객체 필드 (config 안됨)

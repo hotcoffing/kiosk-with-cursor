@@ -4,6 +4,8 @@ import Domain.*;
 
 import java.util.*;
 
+// 장바구니 저장소 구현 클래스
+// 메모리 기반 HashMap을 사용하여 장바구니 주문 항목을 관리
 public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     private static Map<Long, OrderItem> store = new HashMap<>();
 

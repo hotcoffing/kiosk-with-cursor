@@ -4,6 +4,8 @@ import Repository.ShoppingCartRepository;
 import Repository.ShoppingCartRepositoryImpl;
 import kioskService.*;
 
+// 장바구니 관련 설정 클래스
+// 장바구니 Repository와 관련 서비스들을 싱글톤 패턴으로 생성 및 관리
 public class ShoppingCartConfig {
 
     // 싱글톤 패턴: Repository 인스턴스를 하나만 생성하여 모든 서비스가 공유

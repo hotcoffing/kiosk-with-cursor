@@ -2,6 +2,8 @@ package Domain;
 
 import java.util.*;
 
+// 메뉴 카테고리 클래스
+// 카테고리 이름과 해당 카테고리에 속한 메뉴 아이템 목록을 관리
 public class MenuCategory {
     private String name;
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();

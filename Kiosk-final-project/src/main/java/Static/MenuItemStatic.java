@@ -4,6 +4,8 @@ import Domain.Category;
 import static Domain.Category.*;
 import Domain.MenuItem;
 
+// 메뉴 아이템 정적 데이터 클래스
+// 모든 메뉴 아이템(치킨, 국물, 간식, 사이드, 음료)을 정적으로 정의하고 제공
 public class MenuItemStatic {
     // 치킨 아이템
     private static final MenuItem fried = createMenuItem(CHICKEN, "후라이드치킨", 20000, "/");

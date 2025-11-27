@@ -10,6 +10,8 @@ import static Domain.SidesName.*;
 import static Domain.SnacksName.*;
 import static Domain.SoupName.*;
 
+// 메뉴 선택 서비스 구현 클래스
+// 메뉴 카테고리 및 메뉴 이름을 조회하고 주문 상태를 관리하는 기능을 구현
 public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMenuService {
     
     public SelectMenuServiceImpl(ShoppingCartRepository shoppingCartRepository) {

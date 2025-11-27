@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+// 데이터베이스 자동 초기화 클래스
+// 애플리케이션 실행 시 데이터베이스와 테이블을 자동으로 생성
 public class DatabaseInitializer {
     
     private static final String DB_NAME = "kiosk_order_db";

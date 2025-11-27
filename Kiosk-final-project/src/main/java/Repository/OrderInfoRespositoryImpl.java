@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.List;
 
+// 주문 정보 저장소 구현 클래스
+// MySQL 데이터베이스에 주문 정보를 저장하고 조회하는 기능을 구현
 public class OrderInfoRespositoryImpl implements OrderInfoRepository {
 
     private static final String INSERT_ORDER_SQL = """

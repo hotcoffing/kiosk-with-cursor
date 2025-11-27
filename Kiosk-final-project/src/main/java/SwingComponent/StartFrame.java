@@ -3,6 +3,8 @@ package SwingComponent;
 import javax.swing.*;
 import java.awt.*;
 
+// 시작 화면 프레임 클래스
+// 메뉴 선택, 주문 내역 조회 버튼이 있는 초기 화면
 public class StartFrame extends JFrame {
     // config 연결을 위한 기능 필드
     private final SwingGraphic swingGraphic;

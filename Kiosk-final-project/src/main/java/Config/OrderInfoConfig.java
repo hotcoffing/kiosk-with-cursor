@@ -5,6 +5,8 @@ import kioskService.*;
 
 import javax.sql.DataSource;
 
+// 주문 정보 관련 설정 클래스
+// 주문 정보 Repository와 관련 서비스들을 생성 및 관리
 public class OrderInfoConfig {
 
     private final DataSource dataSource;

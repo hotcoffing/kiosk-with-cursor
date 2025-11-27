@@ -12,6 +12,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
+// 메뉴 선택 프레임 클래스
+// 카테고리별 메뉴를 표시하고 선택하여 장바구니에 추가하는 화면
 public class SelectMenuFrame extends JFrame {
     // config 연결을 위한 기능 필드
     private final SwingGraphic swingGraphic;

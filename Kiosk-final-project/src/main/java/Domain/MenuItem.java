@@ -2,6 +2,8 @@ package Domain;
 
 import java.util.*;
 
+// 메뉴 아이템 도메인 클래스
+// 메뉴의 카테고리, 이름, 가격, 이미지 경로 정보를 관리
 public class MenuItem {
     private Category category;
     private String name;

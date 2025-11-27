@@ -2,6 +2,8 @@ package Domain;
 
 import java.io.Serializable;
 
+// 옵션 도메인 클래스
+// 메뉴에 추가할 수 있는 옵션(단일/복수)의 이름, 가격, 타입 정보를 관리
 public class Option implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;

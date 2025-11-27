@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.*;
 
 import static Domain.OrderState.*;
 
+// 주문 도메인 클래스
+// 테이블 번호, 주문 유형, 결제 정보, 주문 항목 등을 포함하는 주문 정보를 관리
 public class Order extends IdCounter implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -32,7 +34,7 @@ public class Order extends IdCounter implements Serializable {
 
     private void initializeDefaults() {
         this.tableNumber = 0;
-        this.orderType = null;
+        this.orderType = OrderType.DINE_IN; // 기본값 매장
         this.orderState = CANCELED;
         this.orderTime = null;
         this.orderItems = null;

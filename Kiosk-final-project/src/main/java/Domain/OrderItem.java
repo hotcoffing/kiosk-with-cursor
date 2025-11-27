@@ -5,6 +5,8 @@ import java.util.*;
 
 import static Domain.OrderState.*;
 
+// 주문 항목 도메인 클래스
+// 메뉴명, 수량, 가격, 옵션 정보를 포함하는 개별 주문 항목을 관리
 public class OrderItem extends IdCounter implements Serializable {
     private static final long serialVersionUID = 1L;
 

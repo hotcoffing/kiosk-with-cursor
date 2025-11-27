@@ -4,6 +4,8 @@ import Repository.OrderInfoRespositoryImpl;
 import javax.sql.DataSource;
 import java.util.concurrent.atomic.*;
 
+// ID 카운터 관리 클래스
+// 주문 ID와 주문 항목 ID를 원자적으로 관리하고 데이터베이스와 동기화
 public class IdCounter {
     protected static final AtomicLong orderItemIdCounter = new AtomicLong(1000L);
     public static final AtomicLong orderIdCounter = new AtomicLong(2000L);

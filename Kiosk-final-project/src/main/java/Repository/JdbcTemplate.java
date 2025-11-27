@@ -4,10 +4,8 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
-/**
- * Spring 없이도 사용할 수 있는 간단한 JDBC 템플릿 구현체.
- * 반복적인 커넥션/PreparedStatement/ResultSet 관리를 캡슐화한다.
- */
+// Spring 없이도 사용할 수 있는 간단한 JDBC 템플릿 구현체
+// 반복적인 커넥션/PreparedStatement/ResultSet 관리를 캡슐화한다
 public class JdbcTemplate {
 
     @FunctionalInterface

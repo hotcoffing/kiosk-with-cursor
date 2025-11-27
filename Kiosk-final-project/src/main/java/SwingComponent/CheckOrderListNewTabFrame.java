@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
 
+// 주문 내역 조회 프레임 클래스
+// 테이블 번호와 고객명으로 주문 내역을 조회하고 총계를 표시하는 새 창
 public class CheckOrderListNewTabFrame extends JFrame {
     private final CheckOrderListService checkOrderListService;
 

@@ -5,6 +5,8 @@ import Repository.*;
 
 import static Domain.IdCounter.*;
 
+// 주문 서비스 구현 클래스
+// 주문 완료 처리, 주문 항목 수량 조절, 주문 상태 관리 기능을 구현
 public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
 
     public OrderServiceImpl(ShoppingCartRepository shoppingCartRepository) {

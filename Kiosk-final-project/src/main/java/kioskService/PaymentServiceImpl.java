@@ -3,6 +3,8 @@ package kioskService;
 import Domain.Order;
 import Repository.OrderInfoRepository;
 
+// 결제 서비스 구현 클래스
+// 주문 정보를 데이터베이스에 저장하고 저장된 주문 ID를 반환하는 기능을 구현
 public class PaymentServiceImpl implements PaymentService {
 
     private final OrderInfoRepository orderInfoRepository;

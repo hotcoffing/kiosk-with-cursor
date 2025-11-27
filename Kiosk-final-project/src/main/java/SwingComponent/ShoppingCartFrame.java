@@ -1,18 +1,19 @@
 package SwingComponent;
 
-import Config.ShoppingCartConfig;
 import Domain.*;
 import kioskService.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.*;
 import java.util.List;
 
+// 장바구니 프레임 클래스
+// 장바구니에 담긴 주문 항목을 표시하고 수량 조절, 주문하기 기능을 제공하는 화면
 public class ShoppingCartFrame extends JFrame {
     private final SwingGraphic swingGraphic;
     private final SwingController swingController;
-    private final ShoppingCartConfig shoppingCartConfig;
     private ShoppingCartService shoppingCartService;
     private Repository.ShoppingCartRepository shoppingCartRepository;
 
@@ -40,23 +41,18 @@ public class ShoppingCartFrame extends JFrame {
     JButton backButton;
     JButton orderButton;
 
-    private Order nowOrder;
+    private Order currentOrder;
 
-    public ShoppingCartFrame(SwingGraphic swingGraphic, SwingController swingController, ShoppingCartConfig shoppingCartConfig) {
+    public ShoppingCartFrame(SwingGraphic swingGraphic, SwingController swingController) {
         this.swingGraphic = swingGraphic;
         this.swingController = swingController;
-        this.shoppingCartConfig = shoppingCartConfig;
-        
-        // ShoppingCartConfig를 통해 서비스와 레포지토리 초기화
-        this.shoppingCartService = shoppingCartConfig.shoppingCartService();
-        this.shoppingCartRepository = shoppingCartConfig.shoppingCartRepository();
 
         // 메인 콘텐츠펜 판넬 생성
         this.contentPane = new JPanel();
 
         // Order 객체 초기화
-        nowOrder = new Order();
-        nowOrder.setOrderState(OrderState.SHOPPING_CART);
+        currentOrder = new Order();
+        currentOrder.setOrderState(OrderState.SHOPPING_CART);
 
         // 컴포넌트 초기화
         initShoppingCartFrame();
@@ -68,8 +64,16 @@ public class ShoppingCartFrame extends JFrame {
         setContentPane(contentPane);
     }
 
+    public void setService(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
+    }
+
+    public void setShoppingCartRepository(Repository.ShoppingCartRepository shoppingCartRepository) {
+        this.shoppingCartRepository = shoppingCartRepository;
+    }
+
     public void setOrder(Order order) {
-        this.nowOrder = order;
+        this.currentOrder = order;
         updateOrderItems();
     }
 
@@ -85,7 +89,7 @@ public class ShoppingCartFrame extends JFrame {
             String selected = (String) tableNumberComboBox.getSelectedItem();
             if (selected != null) {
                 String tableNum = selected.replace("TB ", "");
-                nowOrder.setTableNumber(Integer.parseInt(tableNum));
+                currentOrder.setTableNumber(Integer.parseInt(tableNum));
             }
         });
 
@@ -105,7 +109,7 @@ public class ShoppingCartFrame extends JFrame {
 
         backButton.addActionListener(e -> {
             if (shoppingCartService != null) {
-                shoppingCartService.goChooseOrder(nowOrder);
+                shoppingCartService.goChooseOrder(currentOrder);
             }
             swingController.moveSelectMenu(this);
         });
@@ -125,7 +129,7 @@ public class ShoppingCartFrame extends JFrame {
             }
             
             if (shoppingCartService != null) {
-                shoppingCartService.goOrder(nowOrder);
+                shoppingCartService.goOrder(currentOrder);
             }
             swingController.moveOrder(this);
         });

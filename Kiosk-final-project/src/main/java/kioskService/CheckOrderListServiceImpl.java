@@ -5,6 +5,8 @@ import Repository.*;
 
 import java.util.*;
 
+// 주문 내역 조회 서비스 구현 클래스
+// 데이터베이스에서 주문 내역을 조회하고 총 금액을 계산하는 기능을 구현
 public class CheckOrderListServiceImpl implements CheckOrderListService {
     private final OrderInfoRespositoryImpl orderInfoRespositoryImpl;
 

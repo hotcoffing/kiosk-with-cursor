@@ -12,6 +12,8 @@ import Domain.MenuItem;
 import Static.OptionStatic;
 import kioskService.SelectOptionService;
 
+// 옵션 선택 프레임 클래스
+// 선택한 메뉴에 대한 옵션(단일/복수)을 선택하고 장바구니에 추가하는 새 창
 public class SelectOptionNewTabFrame extends JFrame {
     private final SwingGraphic swingGraphic;
     private final SwingController swingController;

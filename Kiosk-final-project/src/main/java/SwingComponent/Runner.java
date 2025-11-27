@@ -5,6 +5,8 @@ import Config.AppConfig;
 import Config.DatabaseInitializer;
 import Domain.IdCounter;
 
+// 애플리케이션 실행 클래스
+// 데이터베이스 초기화, 프레임 생성, 컨트롤러 설정 등 애플리케이션 초기화를 담당
 public class Runner {
     SwingConfig swingConfig;
 

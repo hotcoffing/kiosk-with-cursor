@@ -5,6 +5,8 @@ import Repository.*;
 import SwingComponent.*;
 import kioskService.*;
 
+// Swing UI 컴포넌트 설정 클래스
+// 모든 프레임, 서비스, Repository를 싱글톤 패턴으로 생성 및 관리
 public class SwingConfig {
 
     // config 필드

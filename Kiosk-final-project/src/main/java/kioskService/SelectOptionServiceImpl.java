@@ -8,6 +8,8 @@ import java.util.*;
 
 import static Domain.OrderState.*;
 
+// 옵션 선택 서비스 구현 클래스
+// 메뉴 옵션을 조회하고 장바구니에 추가하는 기능을 구현
 public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectOptionService {
 
     public SelectOptionServiceImpl(ShoppingCartRepository shoppingCartRepository) {
