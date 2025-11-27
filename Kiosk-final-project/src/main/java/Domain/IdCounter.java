@@ -24,11 +24,10 @@ public class IdCounter {
         try {
             OrderInfoRespositoryImpl repository = new OrderInfoRespositoryImpl(dataSource);
             // repository 생성 시 syncOrderIdCounter()가 자동으로 호출됨
-            // 하지만 명시적으로 동기화를 확인하기 위해 추가 호출
-            System.out.println("Order ID counter synchronized from database");
+            System.out.println("Order ID counter DB 동기화");
         } catch (Exception e) {
-            System.err.println("Failed to sync order ID from database: " + e.getMessage());
             // 테이블이 없거나 오류 발생 시 기본값 유지
+            System.err.println("Order ID counter DB 동기화 실패" + e.getMessage());
         }
     }
 }

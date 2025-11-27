@@ -276,10 +276,10 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
             if (maxId != null) {
                 long nextId = maxId + 1;
                 IdCounter.initOrderIdCounter(nextId);
-                System.out.println("Order ID counter synchronized to: " + nextId);
+                System.out.println("Order ID counter 동기화 : " + nextId);
             }
         } catch (Exception e) {
-            System.err.println("Failed to sync order ID counter: " + e.getMessage());
+            System.err.println("동기화 실패 order ID counter : " + e.getMessage());
             // 테이블이 없거나 오류 발생 시 기본값 유지
         }
     }
