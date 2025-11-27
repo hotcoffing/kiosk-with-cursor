@@ -2,12 +2,16 @@ package SwingComponent;
 
 import Config.SwingConfig;
 import Config.AppConfig;
+import Config.DatabaseInitializer;
 import Domain.IdCounter;
 
 public class Runner {
     SwingConfig swingConfig;
 
     public Runner() {
+        // 데이터베이스 자동 초기화 (데이터베이스 및 테이블 생성)
+        DatabaseInitializer.initializeDatabase();
+        
         // Config 초기화
         swingConfig = new SwingConfig();
         
