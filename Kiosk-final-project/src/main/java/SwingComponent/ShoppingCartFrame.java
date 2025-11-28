@@ -5,7 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+
+import Domain.MenuItem;
+import Static.MenuItemStatic;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -195,12 +201,22 @@ public class ShoppingCartFrame extends JFrame {
         panel.setBackground(Color.WHITE);
         panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120)); // 최대 높이 제한
 
-        // 이미지 라벨 (임시)
-        JLabel imageLabel = new JLabel("사진", SwingConstants.CENTER);
+        // 이미지 아이콘 로드
+        MenuItem menuItem = MenuItemStatic.findMenuItemByName(item.getMenuName());
+        ImageIcon imageIcon = null;
+        if (menuItem != null) {
+            imageIcon = loadImageIcon(menuItem.getImagePath(), 100, 100);
+        }
+        
+        // 이미지 라벨
+        JLabel imageLabel = new JLabel(imageIcon, SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(100, 100));
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         imageLabel.setOpaque(true);
         imageLabel.setBackground(Color.WHITE);
+        if (imageIcon == null) {
+            imageLabel.setText(menuItem == null ? "메뉴 없음" : "이미지 없음");
+        }
 
         // 메뉴 정보 패널
         JPanel infoPanel = new JPanel(new BorderLayout(5, 5));
@@ -277,6 +293,24 @@ public class ShoppingCartFrame extends JFrame {
         panel.add(controlPanel, BorderLayout.EAST);
 
         return panel;
+    }
+
+    // 이미지 아이콘 로드 헬퍼 메서드
+    private ImageIcon loadImageIcon(String imagePath, int width, int height) {
+        try {
+            if (imagePath != null && !imagePath.isEmpty() && !imagePath.equals("/")) {
+                java.net.URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl != null) {
+                    ImageIcon originalIcon = new ImageIcon(imageUrl);
+                    Image originalImage = originalIcon.getImage();
+                    Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            }
+        } catch (Exception e) {
+            // 이미지 로드 실패 시 null 반환
+        }
+        return null; // 이미지가 없거나 로드 실패 시 null 반환
     }
 
     // 컨텐츠펜 판넬에 추가

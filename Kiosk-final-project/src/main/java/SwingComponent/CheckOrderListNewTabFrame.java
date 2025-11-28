@@ -5,6 +5,7 @@ import kioskService.CheckOrderListService;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -17,9 +18,15 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.List;
+
+import Domain.MenuItem;
+import Static.MenuItemStatic;
 
 // 주문 내역 조회 프레임 클래스
 // 테이블 번호와 고객명으로 주문 내역을 조회하고 총계를 표시하는 새 창
@@ -150,30 +157,55 @@ public class CheckOrderListNewTabFrame extends JFrame {
             
             for (OrderItem item : orderItems) {
                 // 각 OrderItem을 표시하는 패널 생성
-                JPanel itemPanel = new JPanel(new BorderLayout(5, 5));
+                JPanel itemPanel = new JPanel(new BorderLayout(10, 5));
                 itemPanel.setBackground(Color.WHITE);
                 itemPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
                 
+                // 이미지 아이콘 로드
+                MenuItem menuItem = MenuItemStatic.findMenuItemByName(item.getMenuName());
+                ImageIcon imageIcon = null;
+                if (menuItem != null) {
+                    imageIcon = loadImageIcon(menuItem.getImagePath(), 80, 80);
+                }
+                
+                // 이미지 라벨 (왼쪽)
+                JLabel imageLabel = new JLabel(imageIcon, SwingConstants.CENTER);
+                imageLabel.setPreferredSize(new Dimension(80, 80));
+                imageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                imageLabel.setOpaque(true);
+                imageLabel.setBackground(Color.WHITE);
+                if (imageIcon == null) {
+                    imageLabel.setText(menuItem == null ? "메뉴 없음" : "이미지 없음");
+                }
+                
+                // 정보 패널 (오른쪽)
+                JPanel infoPanel = new JPanel(new BorderLayout(5, 5));
+                infoPanel.setBackground(Color.WHITE);
+                
                 // 상단: 메뉴명, 수량, 가격
-                JPanel headerPanel = new JPanel(new GridLayout(1, 4, 5, 0));
+                JPanel headerPanel = new JPanel(new BorderLayout(50, 0));
                 headerPanel.setBackground(Color.WHITE);
+                
+                // 왼쪽: 메뉴명과 수량
+                JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+                leftPanel.setBackground(Color.WHITE);
                 
                 JLabel menuNameLabel = new JLabel(item.getMenuName());
                 menuNameLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
                 
-                JLabel quantityLabel = new JLabel("x" + item.getQuantity(), SwingConstants.CENTER);
+                JLabel quantityLabel = new JLabel("x" + item.getQuantity());
                 quantityLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
                 
-                JLabel emptyLabel = new JLabel(""); // 공백
+                leftPanel.add(menuNameLabel);
+                leftPanel.add(quantityLabel);
                 
+                // 오른쪽: 가격
                 int totalItemPrice = item.getPriceWithOptions() * item.getQuantity();
                 JLabel priceLabel = new JLabel(totalItemPrice + "원", SwingConstants.RIGHT);
                 priceLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
                 
-                headerPanel.add(menuNameLabel);
-                headerPanel.add(quantityLabel);
-                headerPanel.add(emptyLabel);
-                headerPanel.add(priceLabel);
+                headerPanel.add(leftPanel, BorderLayout.WEST);
+                headerPanel.add(priceLabel, BorderLayout.EAST);
                 
                 // 하단: 옵션 정보
                 JPanel optionPanel = new JPanel();
@@ -194,10 +226,13 @@ public class CheckOrderListNewTabFrame extends JFrame {
                     }
                 }
                 
-                itemPanel.add(headerPanel, BorderLayout.NORTH);
+                infoPanel.add(headerPanel, BorderLayout.NORTH);
                 if (optionPanel.getComponentCount() > 0) {
-                    itemPanel.add(optionPanel, BorderLayout.CENTER);
+                    infoPanel.add(optionPanel, BorderLayout.CENTER);
                 }
+                
+                itemPanel.add(imageLabel, BorderLayout.WEST);
+                itemPanel.add(infoPanel, BorderLayout.CENTER);
                 
                 itemsPanel.add(itemPanel);
             }
@@ -233,5 +268,23 @@ public class CheckOrderListNewTabFrame extends JFrame {
         }
         itemsPanel.revalidate();
         itemsPanel.repaint();
+    }
+
+    // 이미지 아이콘 로드 헬퍼 메서드
+    private ImageIcon loadImageIcon(String imagePath, int width, int height) {
+        try {
+            if (imagePath != null && !imagePath.isEmpty() && !imagePath.equals("/")) {
+                java.net.URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl != null) {
+                    ImageIcon originalIcon = new ImageIcon(imageUrl);
+                    Image originalImage = originalIcon.getImage();
+                    Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            }
+        } catch (Exception e) {
+            // 이미지 로드 실패 시 null 반환
+        }
+        return null; // 이미지가 없거나 로드 실패 시 null 반환
     }
 }

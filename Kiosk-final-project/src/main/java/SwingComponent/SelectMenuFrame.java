@@ -6,9 +6,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -235,8 +238,11 @@ public class SelectMenuFrame extends JFrame {
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         panel.setPreferredSize(new Dimension(200, 250));
 
-        // 이미지 라벨 (임시로 텍스트로 표시)
-        JLabel imageLabel = new JLabel("사진", SwingConstants.CENTER);
+        // 이미지 아이콘 로드
+        ImageIcon imageIcon = loadImageIcon(item.getImagePath(), 200, 150);
+        
+        // 이미지 라벨
+        JLabel imageLabel = new JLabel(imageIcon, SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(200, 150));
         imageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         imageLabel.setOpaque(true);
@@ -271,6 +277,24 @@ public class SelectMenuFrame extends JFrame {
     private void openOptionFrame(MenuItem item) {
         // 옵션 선택 새 창 열기 (메뉴 아이템 전달)
         swingController.openSelectOptionNewTab(this, item);
+    }
+
+    // 이미지 아이콘 로드 헬퍼 메서드
+    private ImageIcon loadImageIcon(String imagePath, int width, int height) {
+        try {
+            if (imagePath != null && !imagePath.isEmpty() && !imagePath.equals("/")) {
+                java.net.URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl != null) {
+                    ImageIcon originalIcon = new ImageIcon(imageUrl);
+                    Image originalImage = originalIcon.getImage();
+                    Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            }
+        } catch (Exception e) {
+            // 이미지 로드 실패 시 null 반환
+        }
+        return null; // 이미지가 없거나 로드 실패 시 null 반환
     }
 
     public void updateTotal() {

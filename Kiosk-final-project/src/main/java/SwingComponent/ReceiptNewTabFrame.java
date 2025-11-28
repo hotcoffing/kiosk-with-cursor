@@ -17,8 +17,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-// 영수증 출력 프레임 클래스
-// 주문 완료 후 주문 내역, 총계, 주문 시간을 표시하는 영수증 새 창
+// 주문서 출력 프레임 클래스
+// 주문 완료 후 주문 내역, 총계, 주문 시간을 표시하는 주문서 새 창
 public class ReceiptNewTabFrame extends JFrame {
     private final PrintReceiptService printReceiptService;
 
@@ -42,21 +42,17 @@ public class ReceiptNewTabFrame extends JFrame {
         contentPane.setBackground(Color.WHITE);
         contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // 상단 패널 (제목, 부제목, 테이블 번호)
-        JPanel topPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+        // 상단 패널 (제목, 테이블 번호)
+        JPanel topPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         topPanel.setBackground(Color.WHITE);
 
-        titleLabel = new JLabel("영수증", SwingConstants.CENTER);
+        titleLabel = new JLabel("주문서", SwingConstants.CENTER);
         titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
-
-        JLabel subTitle = new JLabel("주문서", SwingConstants.CENTER);
-        subTitle.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 
         tableInfoLabel = new JLabel("테이블 번호 TB -", SwingConstants.CENTER);
         tableInfoLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
 
         topPanel.add(titleLabel);
-        topPanel.add(subTitle);
         topPanel.add(tableInfoLabel);
 
         // 중앙 패널 (주문 항목) - 스크롤 가능

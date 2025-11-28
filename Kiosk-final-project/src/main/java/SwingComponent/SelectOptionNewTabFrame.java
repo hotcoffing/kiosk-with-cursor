@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -112,8 +115,8 @@ public class SelectOptionNewTabFrame extends JFrame {
         menuNameLabel = new JLabel("메뉴 선택", SwingConstants.CENTER);
         menuNameLabel.setFont(labelFont);
 
-        // 메뉴 이미지 라벨 (임시로 텍스트로 표시)
-        menuImageLabel = new JLabel("사진", SwingConstants.CENTER);
+        // 메뉴 이미지 라벨
+        menuImageLabel = new JLabel("", SwingConstants.CENTER);
         menuImageLabel.setPreferredSize(new Dimension(200, 200));
         menuImageLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         menuImageLabel.setOpaque(true);
@@ -150,6 +153,13 @@ public class SelectOptionNewTabFrame extends JFrame {
         if (nowMenuItem == null) return;
 
         menuNameLabel.setText(nowMenuItem.getName());
+        
+        // 이미지 아이콘 로드 및 설정
+        ImageIcon imageIcon = loadImageIcon(nowMenuItem.getImagePath(), 200, 200);
+        menuImageLabel.setIcon(imageIcon);
+        if (imageIcon == null) {
+            menuImageLabel.setText("이미지 없음");
+        }
         
         // 옵션 체크박스 생성 (치킨 메뉴인 경우)
         if (nowMenuItem.getCategory() == Category.CHICKEN) {
@@ -301,6 +311,24 @@ public class SelectOptionNewTabFrame extends JFrame {
             SwingControllerImpl controller = (SwingControllerImpl) swingController;
             controller.updateSelectMenuTotal();
         }
+    }
+
+    // 이미지 아이콘 로드 헬퍼 메서드
+    private ImageIcon loadImageIcon(String imagePath, int width, int height) {
+        try {
+            if (imagePath != null && !imagePath.isEmpty() && !imagePath.equals("/")) {
+                java.net.URL imageUrl = getClass().getResource(imagePath);
+                if (imageUrl != null) {
+                    ImageIcon originalIcon = new ImageIcon(imageUrl);
+                    Image originalImage = originalIcon.getImage();
+                    Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            }
+        } catch (Exception e) {
+            // 이미지 로드 실패 시 null 반환
+        }
+        return null; // 이미지가 없거나 로드 실패 시 null 반환
     }
 
     // 컨텐츠펜 판넬에 추가
