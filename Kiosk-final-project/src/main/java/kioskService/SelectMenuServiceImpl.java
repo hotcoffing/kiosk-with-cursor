@@ -38,13 +38,15 @@ import static Domain.SoupName.SEASHELL;
 import static Domain.SoupName.SUNDAE;
 
 // 메뉴 선택 서비스 구현 클래스
-// 메뉴 카테고리 및 메뉴 이름을 조회하고 주문 상태를 관리하는 기능을 구현
+// 메뉴 카테고리 및 메뉴 이름 조회 및 주문 상태 관리 기능 구현 클래스
 public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMenuService {
     
+    // 메뉴 선택 서비스 생성자
     public SelectMenuServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         super(shoppingCartRepository);
     }
 
+    // 카테고리 이름으로 카테고리 열거형 반환 메서드
     @Override
     public Category getMenuCategory(String categoryName) {
         if (categoryName.equals("치킨")) {
@@ -92,6 +94,7 @@ public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMen
         }
     }
 
+    // 국물 이름으로 국물 열거형 반환 메서드
     @Override
     public SoupName getSoupName(String soupName) {
         if (soupName.equals("오뎅탕")) {
@@ -111,6 +114,7 @@ public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMen
         }
     }
 
+    // 간식 이름으로 간식 열거형 반환 메서드
     @Override
     public SnacksName getSnacksName(String snacksName) {
         if (snacksName.equals("쥐포")) {
@@ -127,6 +131,7 @@ public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMen
         }
     }
 
+    // 사이드 이름으로 사이드 열거형 반환 메서드
     @Override
     public SidesName getSidesName(String sidesName) {
         if (sidesName.equals("떡볶이")) {
@@ -170,11 +175,13 @@ public class SelectMenuServiceImpl extends CalcMoneyAdapter implements SelectMen
         order.setOrderState(OrderState.MAIN);
     }
 
+    // 장바구니 화면으로 이동 메서드
     @Override
     public void goShoppingCart(Order order) {
         order.setOrderState(OrderState.SHOPPING_CART);
     }
 
+    // 주문 화면으로 이동 메서드
     @Override
     public void goOrder(Order order) {
         order.setOrderState(OrderState.ORDERING);

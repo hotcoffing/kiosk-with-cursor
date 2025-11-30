@@ -1,10 +1,10 @@
 package SwingComponent;
 
-import Domain.Order;
-import Domain.OrderItem;
-import kioskService.PrintReceiptService;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,13 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
 
-// 주문서 출력 프레임 클래스
-// 주문 완료 후 주문 내역, 총계, 주문 시간을 표시하는 주문서 새 창
+import Domain.Order;
+import Domain.OrderItem;
+import kioskService.PrintReceiptService;
+
+// 주문서 출력 화면 프레임 클래스
 public class ReceiptNewTabFrame extends JFrame {
     private final PrintReceiptService printReceiptService;
 
@@ -29,7 +28,8 @@ public class ReceiptNewTabFrame extends JFrame {
     private JLabel orderTimeLabel;
     private JLabel footerLabel;
 
-    public ReceiptNewTabFrame(SwingGraphic swingGraphic, PrintReceiptService printReceiptService) {
+    // 영수증 화면 초기화 생성자
+    public ReceiptNewTabFrame(PrintReceiptService printReceiptService) {
         this.printReceiptService = printReceiptService;
         setTitle("Receipt");
         setBounds(1150, 100, 550, 800);
@@ -37,6 +37,7 @@ public class ReceiptNewTabFrame extends JFrame {
         initComponents();
     }
 
+    // 영수증 화면 컴포넌트 초기화 메서드
     private void initComponents() {
         JPanel contentPane = new JPanel(new BorderLayout(10, 10));
         contentPane.setBackground(Color.WHITE);

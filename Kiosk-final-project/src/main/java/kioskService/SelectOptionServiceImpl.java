@@ -14,7 +14,7 @@ import static Domain.OrderState.CHOOSE_ORDER;
 import static Domain.OrderState.SHOPPING_CART;
 
 // 옵션 선택 서비스 구현 클래스
-// 메뉴 옵션을 조회하고 장바구니에 추가하는 기능을 구현
+// 메뉴 옵션 조회 및 장바구니 추가 기능 구현 클래스
 public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectOptionService {
 
     public SelectOptionServiceImpl(ShoppingCartRepository shoppingCartRepository) {
@@ -23,6 +23,7 @@ public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectO
 
     List<Option> options = new ArrayList<>();
 
+    // 카테고리와 옵션 이름으로 옵션 목록 생성 메서드
     @Override
     public List<Option> completeOption(Category type, String optionName) {
         if (type.equals(Category.CHICKEN)) {
@@ -55,6 +56,7 @@ public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectO
         return null;
     }
 
+    // 옵션 포함 가격 계산 메서드
     @Override
     public int getLocalPriceInOption(MenuItem item, List<Option> options) {
         int optionMoney = 0;
@@ -66,11 +68,13 @@ public class SelectOptionServiceImpl extends CalcMoneyAdapter implements SelectO
         return item.getOriginalPrice() + optionMoney;
     }
 
+    // 메뉴 선택 화면으로 이동 메서드
     @Override
     public void goMenu(Order order) {
         order.setOrderState(CHOOSE_ORDER);
     }
 
+    // 장바구니 화면으로 이동 메서드
     @Override
     public void goShoppingCart(Order order) {
         order.setOrderState(SHOPPING_CART);

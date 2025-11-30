@@ -8,14 +8,15 @@ import static Domain.OrderState.CHOOSE_ORDER;
 import static Domain.OrderState.ORDERING;
 
 // 장바구니 서비스 구현 클래스
-// 장바구니 주문 항목 수량 조절 및 주문 상태 관리 기능을 구현
+// 장바구니 주문 항목 수량 조절 및 주문 상태 관리 기능 구현 클래스
 public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements ShoppingCartService {
 
+    // 장바구니 서비스 생성자
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         super(shoppingCartRepository);
     }
 
-    // 장바구니 주문 항목 수량 증가
+    // 주문 항목 수량 증가 메서드
     @Override
     public void plusOrderItem(Long id) {
         OrderItem orderItem = shoppingCartRepository.getOrderItemById(id);
@@ -25,20 +26,20 @@ public class ShoppingCartServiceImpl extends CalcMoneyAdapter implements Shoppin
         }
     }
 
-    // 장바구니 주문 항목 수량 감소
+    // 주문 항목 수량 감소 메서드
     @Override
     public void minusOrderItem(Long id) {
         OrderItem orderItem = shoppingCartRepository.getOrderItemById(id);
         shoppingCartRepository.removeOrderItem(orderItem);
     }
 
-    // 메뉴 선택 화면으로 이동 (주문 상태 변경)
+    // 메뉴 선택 화면으로 이동 메서드
     @Override
     public void goChooseOrder(Order order) {
         order.setOrderState(CHOOSE_ORDER);
     }
 
-    // 주문 화면으로 이동 (주문 상태 변경)
+    // 주문 화면으로 이동 메서드
     @Override
     public void goOrder(Order order) {
         order.setOrderState(ORDERING);

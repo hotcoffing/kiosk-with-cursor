@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 // 데이터베이스 자동 초기화 클래스
-// 애플리케이션 실행 시 데이터베이스와 테이블을 자동으로 생성
+// 애플리케이션 실행 시 데이터베이스와 테이블 자동 생성 클래스
 public class DatabaseInitializer {
     
     private static final String DB_NAME = "kiosk_order_db";
@@ -14,6 +14,7 @@ public class DatabaseInitializer {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "rlatjdqls@2";
     
+    // 데이터베이스 및 테이블 초기화 메서드
     public static void initializeDatabase() {
         try {
             createDatabaseIfNotExists();
@@ -25,6 +26,7 @@ public class DatabaseInitializer {
         }
     }
     
+    // 데이터베이스 생성 메서드
     private static void createDatabaseIfNotExists() throws SQLException {
         try (Connection conn = DriverManager.getConnection(DB_URL + "?serverTimezone=UTC", USERNAME, PASSWORD);
              Statement stmt = conn.createStatement()) {
@@ -35,6 +37,7 @@ public class DatabaseInitializer {
         }
     }
     
+    // 주문 및 주문 항목 테이블 생성 메서드
     private static void createTablesIfNotExists() throws SQLException {
         String dbUrl = DB_URL + "/" + DB_NAME + "?serverTimezone=UTC";
         

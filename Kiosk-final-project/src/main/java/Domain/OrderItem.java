@@ -8,7 +8,7 @@ import java.util.List;
 import static Domain.OrderState.*;
 
 // 주문 항목 도메인 클래스
-// 메뉴명, 수량, 가격, 옵션 정보를 포함하는 개별 주문 항목을 관리
+// 메뉴명, 수량, 가격, 옵션 정보를 포함하는 개별 주문 항목 관리 클래스
 public class OrderItem extends IdCounter implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -24,10 +24,12 @@ public class OrderItem extends IdCounter implements Serializable {
     private int cachedPriceWithOptions;
     private String optionSummary;
 
+    // 메뉴 아이템으로 주문 항목 생성자
     public OrderItem(MenuItem menuItem) {
         this(orderItemIdCounter.getAndIncrement(), menuItem.getName(), menuItem.getOriginalPrice(), 1);
     }
 
+    // 주문 항목 생성자
     public OrderItem(Long id, String menuName, int price, int quantity) {
         this.id = id;
         this.menuName = menuName;
@@ -36,7 +38,7 @@ public class OrderItem extends IdCounter implements Serializable {
         this.orderState = CHOOSE_ORDER;
     }
 
-    // 옵션 설정 (Swing actionListener 활용)
+    // 단일 옵션 및 다중 옵션 설정 메서드
     public void setOptions(Option singleOption, List<Option> multipleOption) {
         if (singleOption == null) {
             throw new IllegalArgumentException("single option can't be null");
@@ -47,7 +49,7 @@ public class OrderItem extends IdCounter implements Serializable {
         this.optionSummary = null;
     }
 
-    // 옵션을 포함한 하나의 음식 가격 계산
+    // 옵션 포함 가격 계산 메서드
     public int getPriceWithOptions() {
         int singleOptionPrice;
         int multipleOptionPrice = 0;
@@ -72,61 +74,72 @@ public class OrderItem extends IdCounter implements Serializable {
         return cachedPriceWithOptions;
     }
 
-    // Getter
+    // 주문 항목 ID 반환 메서드
     public Long getId() {
         return id;
     }
 
-    // Getter and Setter
+    // 메뉴 이름 반환 메서드
     public String getMenuName() {
         return menuName;
     }
 
+    // 메뉴 이름 설정 메서드
     public void setMenuName(String menuName) {
         this.menuName = menuName;
     }
 
+    // 가격 반환 메서드
     public int getPrice() {
         return price;
     }
 
+    // 가격 설정 메서드
     public void setPrice(int price) {
         this.price = price;
     }
 
+    // 수량 반환 메서드
     public int getQuantity() {
         return quantity;
     }
 
+    // 수량 설정 메서드
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    // 주문 상태 반환 메서드
     public OrderState getOrderState() {
         return orderState;
     }
 
+    // 주문 상태 설정 메서드
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
     }
 
+    // 단일 옵션 반환 메서드
     public Option getSingleOption() {
         return singleOption;
     }
 
+    // 다중 옵션 목록 반환 메서드
     public List<Option> getMultipleOptions() {
         return multipleOptions;
     }
 
+    // 옵션 요약 설정 메서드
     public void setOptionSummary(String optionSummary) {
         this.optionSummary = optionSummary;
     }
 
+    // 옵션 포함 가격 캐시 설정 메서드
     public void setCachedPriceWithOptions(int cachedPriceWithOptions) {
         this.cachedPriceWithOptions = cachedPriceWithOptions;
     }
 
-    // 옵션 정보를 문자열로 반환 (단일 옵션과 다중 옵션 분리)
+    // 옵션 정보 문자열 반환 메서드
     public String getOptionsString() {
         if (singleOption == null && optionSummary != null) {
             return optionSummary;
@@ -157,7 +170,7 @@ public class OrderItem extends IdCounter implements Serializable {
         return optionSummary;
     }
 
-    // 같은 메뉴와 옵션인지 비교하는 메서드
+    // 동일한 메뉴와 옵션인지 비교 메서드
     public boolean isSameMenuAndOptions(OrderItem other) {
         if (other == null) return false;
         

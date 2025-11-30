@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 // 주문 정보 저장소 구현 클래스
-// MySQL 데이터베이스에 주문 정보를 저장하고 조회하는 기능을 구현
+// MySQL 데이터베이스에 주문 정보 저장 및 조회 기능 구현 클래스
 public class OrderInfoRespositoryImpl implements OrderInfoRepository {
 
     private static final String INSERT_ORDER_SQL = """
@@ -78,11 +78,13 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    // 주문 정보 저장소 생성자
     public OrderInfoRespositoryImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         syncOrderIdCounter();
     }
 
+    // 주문 정보 데이터베이스 저장 메서드
     @Override
     public void addOrder(Order order) {
         if (order == null) {
@@ -139,6 +141,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         }
     }
 
+    // 주문 정보 삭제 메서드
     @Override
     public void removeOrder(Order order) {
         if (order == null) {
@@ -148,12 +151,14 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         jdbcTemplate.update(DELETE_ORDER_SQL, ps -> ps.setLong(1, order.getId()));
     }
 
+    // 모든 주문 정보 삭제 메서드
     @Override
     public void removeAllOrders() {
         jdbcTemplate.update(DELETE_ALL_ORDER_ITEMS_SQL, null);
         jdbcTemplate.update(DELETE_ALL_ORDERS_SQL, null);
     }
 
+    // ID로 주문 정보 조회 메서드
     @Override
     public Order getOrderById(Long id) {
         if (id == null) {
@@ -171,6 +176,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return order;
     }
 
+    // 테이블 번호와 주문자명으로 주문 정보 조회 메서드
     @Override
     public Order getOrderByUserInfo(int tableNumber, String name) {
         Order order = jdbcTemplate.queryForObject(SELECT_ORDER_BY_USER_SQL,
@@ -187,6 +193,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return order;
     }
 
+    // 테이블 번호와 주문자명으로 주문 목록 조회 메서드
     @Override
     public List<Order> getOrdersByUserInfo(int tableNumber, String name) {
         List<Order> orders = jdbcTemplate.query(SELECT_ORDERS_BY_USER_SQL,
@@ -203,6 +210,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return orders;
     }
 
+    // 모든 주문 정보 조회 메서드
     @Override
     public List<Order> getAllOrder() {
         List<Order> orders = jdbcTemplate.query(SELECT_ALL_ORDERS_SQL, null, this::mapOrder);
@@ -212,6 +220,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return orders;
     }
 
+    // 최대 주문 ID 조회 메서드
     @Override
     public Long getMaxOrderId() {
         try {
@@ -222,6 +231,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         }
     }
 
+    // 주문에 주문 항목 목록 연결 메서드
     private void attachOrderItems(Order order) {
         List<OrderItem> orderItems = jdbcTemplate.query(SELECT_ORDER_ITEMS_SQL,
                 ps -> ps.setLong(1, order.getId()),
@@ -230,6 +240,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         order.setOrderItems(orderItems);
     }
 
+    // ResultSet을 Order 객체로 변환 메서드
     private Order mapOrder(java.sql.ResultSet rs) throws java.sql.SQLException {
         Order order = new Order(rs.getLong("id"));
         order.setTableNumber(rs.getInt("table_number"));
@@ -245,6 +256,7 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return order;
     }
 
+    // ResultSet을 OrderItem 객체로 변환 메서드
     private OrderItem mapOrderItem(java.sql.ResultSet rs) throws java.sql.SQLException {
         OrderItem orderItem = new OrderItem(
                 rs.getLong("order_item_id"),
@@ -262,18 +274,22 @@ public class OrderInfoRespositoryImpl implements OrderInfoRepository {
         return value != null ? OrderType.valueOf(value) : null;
     }
 
+    // 문자열을 OrderState 열거형으로 변환 메서드
     private OrderState parseOrderState(String value) {
         return value != null ? OrderState.valueOf(value) : null;
     }
 
+    // 문자열을 PaymentType 열거형으로 변환 메서드
     private PaymentType parsePaymentType(String value) {
         return value != null ? PaymentType.valueOf(value) : null;
     }
 
+    // 열거형을 문자열로 변환 메서드
     private String getEnumName(Enum<?> value) {
         return value != null ? value.name() : null;
     }
 
+    // 데이터베이스에서 주문 ID 카운터 동기화 메서드
     private void syncOrderIdCounter() {
         try {
             Long maxId = jdbcTemplate.queryForObject(SELECT_MAX_ORDER_ID_SQL, null,

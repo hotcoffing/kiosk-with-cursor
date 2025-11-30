@@ -10,28 +10,29 @@ import static Domain.IdCounter.initOrderItemIdCounter;
 import static Domain.IdCounter.orderIdCounter;
 
 // 주문 서비스 구현 클래스
-// 주문 완료 처리, 주문 항목 수량 조절, 주문 상태 관리 기능을 구현
+// 주문 완료 처리, 주문 항목 수량 조절, 주문 상태 관리 기능 구현 클래스
 public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
 
+    // 주문 서비스 생성자
     public OrderServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         super(shoppingCartRepository);
     }
 
-    // 주문 항목 수량 증가
+    // 주문 항목 수량 증가 메서드
     @Override
     public void plusOrderItem(Long id) {
         OrderItem orderItem = shoppingCartRepository.getOrderItemById(id);
         shoppingCartRepository.addOrderItem(orderItem);
     }
 
-    // 주문 항목 수량 감소
+    // 주문 항목 수량 감소 메서드
     @Override
     public void minusOrderItem(Long id) {
         OrderItem orderItem = shoppingCartRepository.getOrderItemById(id);
         shoppingCartRepository.removeOrderItem(orderItem);
     }
 
-    // 최종 주문 (최종 정보 저장, 상태 갱신, 장바구니 초기화)
+    // 주문 완료 처리 메서드
     @Override
     public void completeOrder(Order order, PaymentType paymentType, String customerName) {
         if (order.getOrderState() != OrderState.ORDERING) {
@@ -65,7 +66,7 @@ public class OrderServiceImpl extends CalcMoneyAdapter implements OrderService {
         // 다음에 Order가 생성될 때 증가된 ID를 사용하도록 함
     }
 
-    // 주문 화면에서 뒤로가기 (장바구니 상태로 변경)
+    // 주문 화면에서 뒤로가기 메서드
     @Override
     public void goBack(Order order) {
         order.setOrderState(OrderState.SHOPPING_CART);

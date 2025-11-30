@@ -8,11 +8,11 @@ import java.util.Map;
 import Domain.OrderItem;
 
 // 장바구니 저장소 구현 클래스
-// 메모리 기반 HashMap을 사용하여 장바구니 주문 항목을 관리
+// 메모리 기반 HashMap을 사용한 장바구니 주문 항목 관리 클래스
 public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     private static final Map<Long, OrderItem> store = new HashMap<>();
 
-    // 주문 항목 추가 (같은 메뉴와 옵션이 있으면 수량만 증가)
+    // 주문 항목 추가 메서드
     @Override
     public void addOrderItem(OrderItem orderItem) {
         // 같은 메뉴와 옵션을 가진 항목이 있는지 찾기
@@ -27,7 +27,7 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
         }
     }
     
-    // 같은 메뉴와 옵션을 가진 OrderItem 찾기
+    // 동일한 메뉴와 옵션을 가진 주문 항목 검색 메서드
     private OrderItem findSameMenuAndOptions(OrderItem targetItem) {
         for (OrderItem item : store.values()) {
             if (item.isSameMenuAndOptions(targetItem)) {
@@ -37,7 +37,7 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
         return null;
     }
 
-    // 주문 항목 제거 (수량이 1보다 크면 수량만 감소, 1이면 완전 제거)
+    // 주문 항목 제거 메서드
     @Override
     public void removeOrderItem(OrderItem orderItem) {
         Long orderItemId = orderItem.getId();
@@ -55,19 +55,19 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
         }
     }
 
-    // 모든 주문 항목 제거
+    // 모든 주문 항목 제거 메서드
     @Override
     public void removeAllOrderItems() {
         store.clear();
     }
 
-    // ID로 주문 항목 조회
+    // ID로 주문 항목 조회 메서드
     @Override
     public OrderItem getOrderItemById(Long id) {
         return store.get(id);
     }
 
-    // 모든 주문 항목 조회
+    // 모든 주문 항목 조회 메서드
     @Override
     public List<OrderItem> getAllOrderItems() {
         return new ArrayList<>(store.values());

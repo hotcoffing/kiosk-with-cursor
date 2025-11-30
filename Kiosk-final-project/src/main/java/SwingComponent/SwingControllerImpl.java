@@ -5,11 +5,8 @@ import javax.swing.JFrame;
 import Config.SwingConfig;
 import Domain.MenuItem;
 
-// 프레임 간 이동 제어 구현 클래스
-// 각 프레임 간의 전환 및 새 창 열기 기능을 구현
+// 프레임 간 화면 전환 제어 구현 클래스
 public class SwingControllerImpl implements SwingController {
-
-    // 모든 프레임 객체 필드 (config 안됨)
     private StartFrame startFrame;
     private SelectMenuFrame selectMenuFrame;
     private CheckOrderListNewTabFrame checkOrderListFrame;
@@ -19,11 +16,11 @@ public class SwingControllerImpl implements SwingController {
     private ReceiptNewTabFrame receiptFrame;
     private SwingConfig swingConfig;
 
+    // 컨트롤러 생성자
     public SwingControllerImpl() {
-        // 생성자는 비워둠 (Config에서 생성 시점에는 프레임이 없으므로)
     }
 
-    // Runner 호출 : 프레임 DI 주입
+    // 프레임 설정 메서드
     public void setFrames(StartFrame startFrame,
                           SelectMenuFrame selectMenuFrame,
                           CheckOrderListNewTabFrame checkOrderListFrame,
@@ -42,93 +39,82 @@ public class SwingControllerImpl implements SwingController {
         this.swingConfig = swingConfig;
     }
 
-    // startFrame -> checkOrderListNewTabFrame (새 창 생성)
+    // 주문 내역 조회 화면 열기 메서드
     @Override
     public void openCheckOrderList(JFrame nowFrame) {
         if (checkOrderListFrame != null) {
             checkOrderListFrame.setVisible(true);
-            System.out.println("주문 내역 새 창 열기");
         }
     }
 
-    // startFrame -> selectMenuFrame
+    // 메뉴 선택 화면으로 이동 메서드
     @Override
     public void moveSelectMenu(JFrame nowFrame) {
         if (selectMenuFrame != null) {
             nowFrame.setVisible(false);
             selectMenuFrame.setVisible(true);
-            // 장바구니 업데이트
             if (selectMenuFrame instanceof SelectMenuFrame) {
                 ((SelectMenuFrame) selectMenuFrame).updateTotal();
             }
-            System.out.println("메뉴 선택 화면으로 이동");
         }
     }
 
-    // selectMenuFrame -> startFrame
+    // 시작 화면으로 이동 메서드
     @Override
     public void moveStartFrame(JFrame nowFrame) {
         if (startFrame != null) {
             nowFrame.setVisible(false);
             startFrame.setVisible(true);
-            System.out.println("시작 화면으로 복귀");
         }
     }
 
-    // selectMenuFrame -> selectOptionNewTabFrame (새 창 생성)
+    // 옵션 선택 새 탭 열기 메서드
     @Override
     public void openSelectOptionNewTab(JFrame nowFrame, MenuItem menuItem) {
         if (selectOptionNewTabFrame != null) {
             selectOptionNewTabFrame.setMenuItem(menuItem);
             selectOptionNewTabFrame.setVisible(true);
-            System.out.println("옵션 선택 새 창 열기 (메뉴: " + menuItem.getName() + ")");
         }
     }
 
-    // selectMenuFrame -> shoppingCartFrame
+    // 장바구니 화면으로 이동 메서드
     @Override
     public void moveShoppingCart(JFrame nowFrame) {
         if (shoppingCartFrame != null) {
-            // 장바구니 업데이트
             if (shoppingCartFrame instanceof ShoppingCartFrame) {
                 ((ShoppingCartFrame) shoppingCartFrame).updateOrderItems();
             }
             nowFrame.setVisible(false);
             shoppingCartFrame.setVisible(true);
-            System.out.println("장바구니 화면으로 이동");
         }
     }
 
-    // selectMenuFrame -> OrderFrame
+    // 주문 화면으로 이동 메서드
     @Override
     public void moveOrder(JFrame nowFrame) {
         if (orderFrame != null) {
-            // 주문 화면 업데이트
             if (orderFrame instanceof OrderFrame) {
                 ((OrderFrame) orderFrame).updateOrderItems();
             }
             nowFrame.setVisible(false);
             orderFrame.setVisible(true);
-            System.out.println("주문 화면으로 이동");
         }
     }
 
-    // 메뉴 선택 화면 총계 업데이트 (옵션 창에서 호출)
+    // 메뉴 선택 화면 총계 업데이트 메서드
     public void updateSelectMenuTotal() {
         if (selectMenuFrame != null) {
             selectMenuFrame.updateTotal();
         }
     }
 
-    // OrderFrame -> receiptNewTabFrame (새 창 생성)
+    // 영수증 화면 열기 메서드
     @Override
     public void openReceipt(JFrame nowFrame, Long orderId) {
-        // 매번 새로운 ReceiptNewTabFrame 생성 (주문마다 새 창 띄우기)
         if (swingConfig != null) {
             ReceiptNewTabFrame newReceiptFrame = swingConfig.createNewReceiptFrame();
             if (newReceiptFrame != null) {
                 newReceiptFrame.displayReceipt(orderId);
-                System.out.println("영수증 새 창 열기 (Order ID: " + orderId + ")");
             }
         }
     }

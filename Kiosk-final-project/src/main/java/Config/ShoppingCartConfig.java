@@ -14,7 +14,7 @@ import kioskService.ShoppingCartService;
 import kioskService.ShoppingCartServiceImpl;
 
 // 장바구니 관련 설정 클래스
-// 장바구니 Repository와 관련 서비스들을 싱글톤 패턴으로 생성 및 관리
+// 장바구니 Repository와 관련 서비스 싱글톤 패턴 생성 및 관리 클래스
 public class ShoppingCartConfig {
 
     // 싱글톤 패턴: Repository 인스턴스를 하나만 생성하여 모든 서비스가 공유
@@ -28,30 +28,35 @@ public class ShoppingCartConfig {
         return shoppingCartRepository;
     }
 
+    // 금액 계산 어댑터 반환 메서드
     public CalcMoneyInterface calcMoneyAdapter() {
         return new CalcMoneyAdapter(
                 shoppingCartRepository()
         );
     }
 
+    // 메뉴 선택 서비스 반환 메서드
     public SelectMenuService selectMenuService() {
         return new SelectMenuServiceImpl(
                 shoppingCartRepository()
         );
     }
 
+    // 옵션 선택 서비스 반환 메서드
     public SelectOptionService selectOptionService() {
         return new SelectOptionServiceImpl(
                 shoppingCartRepository()
         );
     }
 
+    // 장바구니 서비스 반환 메서드
     public ShoppingCartService shoppingCartService() {
         return new ShoppingCartServiceImpl(
                 shoppingCartRepository()
         );
     }
 
+    // 주문 서비스 반환 메서드
     public OrderService orderService() {
         return new OrderServiceImpl(
                 shoppingCartRepository()

@@ -4,10 +4,11 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 
-// 애플리케이션 데이터베이스 연결 설정 클래스
-// HikariCP를 사용하여 MySQL 데이터베이스 연결 풀을 생성
+// 데이터베이스 연결 풀 설정 클래스
+// HikariCP를 사용한 MySQL 연결 관리
 public class AppConfig {
 
+    // 데이터베이스 연결 풀 생성 메서드
     public DataSource dataSource() {
         // HikariCP를 사용하여 DataSource 설정
         HikariConfig config = new HikariConfig();

@@ -1,23 +1,23 @@
 package kioskService;
 
+import java.util.List;
+
 import Domain.MenuItem;
 import Domain.Option;
 import Domain.OrderItem;
 import Repository.ShoppingCartRepository;
 
-import java.util.List;
-
-// 금액 계산 어댑터 클래스
-// CalcMoneyInterface의 기본 구현을 제공하는 추상 클래스
+// 금액 계산 기본 구현 클래스
 public class CalcMoneyAdapter implements CalcMoneyInterface {
 
     protected final ShoppingCartRepository shoppingCartRepository;
 
+    // 금액 계산 어댑터 생성자
     public CalcMoneyAdapter(ShoppingCartRepository shoppingCartRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
     }
     
-    // ShoppingCart 총 금액 갱신
+    // 장바구니의 모든 주문 항목 총 가격 계산 메서드
     @Override
     public int getTotalPriceUseShoppingCart() {
         List<OrderItem> orderItems = shoppingCartRepository.getAllOrderItems();
@@ -32,9 +32,9 @@ public class CalcMoneyAdapter implements CalcMoneyInterface {
         return totalPrice;
     }
 
+    // 옵션 포함 가격 계산 메서드
     @Override
     public int getLocalPriceInOption(MenuItem item, List<Option> options) {
-        // 항상 0을 반환하지만 인터페이스 구현을 위해 필요
         return 0;
     }
 }

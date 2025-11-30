@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-// JDBC 템플릿 구현체
-// 반복적인 커넥션/PreparedStatement/ResultSet 관리를 캡슐화한다
+// JDBC 템플릿 구현 클래스
+// 반복적인 커넥션/PreparedStatement/ResultSet 관리 캡슐화 클래스
 public class JdbcTemplate {
 
     @FunctionalInterface
@@ -29,6 +29,7 @@ public class JdbcTemplate {
         this.dataSource = dataSource;
     }
 
+    // SQL 업데이트 실행 메서드
     public int update(String sql, PreparedStatementSetter setter) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -41,6 +42,7 @@ public class JdbcTemplate {
         }
     }
 
+    // SQL 쿼리 실행 및 결과 목록 반환 메서드
     public <T> List<T> query(String sql, PreparedStatementSetter setter, RowMapper<T> rowMapper) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -59,6 +61,7 @@ public class JdbcTemplate {
         }
     }
 
+    // SQL 쿼리 실행 및 단일 객체 반환 메서드
     public <T> T queryForObject(String sql, PreparedStatementSetter setter, RowMapper<T> rowMapper) {
         List<T> results = query(sql, setter, rowMapper);
         if (results.isEmpty()) {
